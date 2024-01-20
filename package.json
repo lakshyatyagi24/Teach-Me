@@ -1,0 +1,22 @@
+{
+  "name": "teach-me",
+  "version": "1.0.0",
+  "description": "MERN Teach-Me: A Web Application For Finding Private Tutors For Students.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OrelDamti/Teach-Me.git"
+  },
+  "author": "Orel Damti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OrelDamti/Teach-Me/issues"
+  },
+  "homepage": "https://github.com/OrelDamti/Teach-Me#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
