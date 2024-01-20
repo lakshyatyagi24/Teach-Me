@@ -1,6 +1,14 @@
-const express = require ('express')
+import express from 'express'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express()
 
-app.listen(5000,console.log('Server runnnning'))
+app.get('/',(req,res)=>{
+    res.send('API is running........')
+})
+
+const PORT = process.env.PORT || 5000
+app.listen(PORT,console.log(`Server runnnning in ${process.env.NODE_ENV} mode on port -  ${PORT}`))
 
