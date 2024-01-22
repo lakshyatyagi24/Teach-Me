@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React from "react";
 import courses from "../courses";
 import { Row, Col } from "react-bootstrap";

@@ -15,7 +15,7 @@ const courses = [
     _id: "2",
     name: "Algebra",
     image: "/images/algebra.jpg",
-    description: "חפש מורים פרטיים לחדווא",
+    description: "חפש מורים פרטיים לאלגברה",
     brand: "Apple",
     category: "Electronics",
     price: 599.99,
