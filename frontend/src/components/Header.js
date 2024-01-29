@@ -1,17 +1,24 @@
 // eslint-disable-next-line
 import React from "react";
+import { LinkContainer } from "react-router-bootstrap";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
 const Header = () => {
   return (
     <header>
-      <Navbar bg="dark" data-bs-theme="dark" variant="dark" collapseOnSelect >
+      <Navbar bg="dark" data-bs-theme="dark" variant="dark" collapseOnSelect>
         <Container>
-          <Navbar.Brand href="/">Teach-Me</Navbar.Brand>
+          <LinkContainer to="/">
+            <Navbar.Brand>Teach-Me</Navbar.Brand>
+          </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link href="/login"><i className="fa-solid fa-user"></i> Sign In</Nav.Link>
+              <LinkContainer to="/login">
+                <Nav.Link>
+                  <i className="fa-solid fa-user"></i> Sign In
+                </Nav.Link>
+              </LinkContainer>
             </Nav>
           </Navbar.Collapse>
         </Container>
