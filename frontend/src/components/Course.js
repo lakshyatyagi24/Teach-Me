@@ -12,8 +12,8 @@ const Course = ({ course }) => {
 
       <Card.Body>
         <a href={`/course/${course._id}`}>
-          <Card.Title as="div" style={{textAlign: "left"}}>
-            <strong>{course.name}</strong>
+          <Card.Title as="div" style={{textAlign: "center"}}>
+            {course.name}
           </Card.Title>
         </a>
         <Card.Text as="div">
