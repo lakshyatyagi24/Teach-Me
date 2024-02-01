@@ -1,6 +1,15 @@
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import User from '../models/userModel.js'
+
+// @desc Fetch all courses
+// @route GET /api/courses
+// @access Public
+const getAllUser = asyncHandler(async(req, res) =>{
+    const user =  await User.find({})
+    res.json(user)
+})
+
 // @desc Auth user & get token
 // @route POST /api/users/login
 // @access Public
@@ -81,4 +90,5 @@ export{
     authUser,
     getUserProfile,
     registerUser,
+    getAllUser,
 }
