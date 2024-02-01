@@ -3,20 +3,19 @@ import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import Course from "../components/Course";
 import axios from 'axios'
-import courses from "../courses";
 
 const HomeScreen = () => {
-  // const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState([]);
 
-  // //whatever we put inisde the useEffect func will run when the HomeScreen component loads
-  // //what we want is that our coreses loads to the screen
-  // useEffect(() => {
-  //   const fetchCourses = async () => {
-  //     const { data } = await axios.get("/api/courses");
-  //     setCourses(data);
-  //   };
-  //   fetchCourses();
-  // },[]);
+  //whatever we put inisde the useEffect func will run when the HomeScreen component loads
+  //what we want is that our coreses loads to the screen
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const { data } = await axios.get("/api/courses");
+      setCourses(data);
+    };
+    fetchCourses();
+  },[]);
 
   return (
     <>
