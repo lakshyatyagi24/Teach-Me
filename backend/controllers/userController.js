@@ -2,8 +2,8 @@ import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import User from '../models/userModel.js'
 
-// @desc Fetch all courses
-// @route GET /api/courses
+// @desc Fetch all users
+// @route GET /api/users
 // @access Public
 const getAllUser = asyncHandler(async(req, res) =>{
     const user =  await User.find({})
