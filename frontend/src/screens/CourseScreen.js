@@ -12,10 +12,10 @@ import {
 import Rating from "../components/Rating";
 import courses from "../courses";
 
-const CourseScreen = ( ) => {
+const CourseScreen = () => {
   const { id } = useParams();
   const course = courses.find((p) => p._id === id);
-  
+
   return (
     <>
       <Link className="btn btn-dark my-3" to="/">

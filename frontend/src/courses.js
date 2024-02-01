@@ -3,7 +3,7 @@ const courses = [
     _id: "1",
     name: "Hedva",
     image: "/images/hedva.jpg",
-    description: "Look for teachers here",
+    description: "Look for teachers",
     Faculty: "Software",
     price: 39.99,
     countInStock: 10,
