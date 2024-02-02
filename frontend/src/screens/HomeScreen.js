@@ -1,32 +1,33 @@
 // eslint-disable-next-line
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 import Course from "../components/Course";
-import axios from 'axios'
+import { listCourses } from "../actions/courseActions";
 
 const HomeScreen = () => {
-  const [courses, setCourses] = useState([]);
+  const dispatch = useDispatch();
+
+  const courseList = useSelector((state) => state.courseList);
+  const { loading, error, courses } = courseList;
 
   //whatever we put inisde the useEffect func will run when the HomeScreen component loads
   //what we want is that our coreses loads to the screen
   useEffect(() => {
-    const fetchCourses = async () => {
-      const { data } = await axios.get("/api/courses");
-      setCourses(data);
-    };
-    fetchCourses();
-  },[]);
+    dispatch(listCourses());
+  }, [dispatch]);
 
   return (
     <>
       <h1>Our Courses</h1>
-      <Row>
+      {loading ? <h2>Loading...</h2> : error ? <h3>{error}</h3> : <Row>
         {courses.map((course) => (
           <Col key={course._id} sm={12} md={6} lg={4} xl={3}>
             <Course course={course} />
           </Col>
         ))}
-      </Row>
+      </Row>}
+      
     </>
   );
 };
