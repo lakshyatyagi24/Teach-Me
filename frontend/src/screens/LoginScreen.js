@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/Message";
@@ -35,7 +35,17 @@ const LoginScreen = () => {
           ></Form.Control>
         </Form.Group>
 
+        <Button type="submit" variant="primary">
+          Sign In
+        </Button>
       </Form>
+
+        <Row className="py-3" >
+            <Col>
+                New Student? <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}></Link>
+            </Col>
+        </Row>
+
     </FormContainer>
   );
 };
