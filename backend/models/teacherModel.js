@@ -2,7 +2,12 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
 const teacherSchema = mongoose.Schema({
-    name:{
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true],
+    },
+    teacherName:{
         type : String,
         required: true
     },
@@ -38,11 +43,6 @@ const teacherSchema = mongoose.Schema({
     phone:{
         type : String,
         required: true
-    },
-    isAdmin:{
-        type : Boolean,
-        required: true,
-        default: false
     }
 }, {
     timestamps : true

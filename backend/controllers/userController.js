@@ -23,7 +23,7 @@ const authUser = asyncHandler(async(req, res) =>{
             _id:user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin,
+            role: user.role,
             token : generateToken(user._id),
         })
     }
@@ -57,7 +57,7 @@ const registerUser = asyncHandler(async(req, res) =>{
             _id:user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin,
+            role: user.role,
             token : generateToken(user._id),
         })
     }else{
@@ -77,7 +77,7 @@ const getUserProfile = asyncHandler(async(req, res) =>{
             _id:user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin,
+            role: user.role,
         })
 
     }else{
@@ -86,9 +86,97 @@ const getUserProfile = asyncHandler(async(req, res) =>{
     }
 })
 
+// @desc Register a new student
+// @route POST /api/students
+// @access Public
+const registerStudent = asyncHandler(async(req, res) =>{
+    const { name , email , password ,role} = req.body
+
+    const studentExists = await Student.findOne({email})
+
+    if (studentExists){
+        res.status(400)
+        throw new Error('Student already exist')
+    }
+
+    const user = await Student.create({
+        name,
+        email,
+        password,
+        role
+    })
+
+    if (user){
+        res.status(201).json({
+            _id:user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            token : generateToken(user._id),
+        })
+    }else{
+        res.status(400)
+        throw new Error('Invalid userStudent data')
+    }
+})
+
+// @desc    Register a new teacher
+// @route   POST /api/users/register/teacher
+// @access  Public
+const registerTeacher = asyncHandler(async (req, res) => {
+    const { name, email, password, role} = req.body;
+  
+    const userExists = await User.findOne({ email });
+  
+    if (userExists) {
+      res.status(400);
+      throw new Error('UserTeacher already exists');
+    }
+  
+    const teacherExists = await Teacher.findOne({ teacherName: teacherName });
+  
+    if (teacherExists) {
+      res.status(400);
+      throw new Error('Teacher Name already exists');
+    }
+  
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: 'teacher',
+    });
+  
+    const teacher = await Teacher.create({
+      user: user._id,
+      teacherName: teacherName,
+      email: user.email,
+      studentId:teacher.studentId,
+      studentDepartment:teacher.studentDepartment,
+      phone:teacher.phone,
+      token : generateToken(teacher._id),
+    });
+  
+    if (user && teacher) {
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(400);
+      throw new Error('Invalid user data');
+    }
+  });
+
 export{
     authUser,
     getUserProfile,
     registerUser,
     getAllUser,
+    registerStudent,
+    registerTeacher,
+
 }
