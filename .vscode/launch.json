@@ -12,6 +12,13 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\backend\\server.js"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Client Program",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
