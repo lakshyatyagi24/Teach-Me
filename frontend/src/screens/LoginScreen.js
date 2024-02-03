@@ -10,8 +10,10 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const location = useLocation();
+  
 
+
+  const location = useLocation();
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
   const submitHandler = (e) => {
@@ -53,9 +55,17 @@ const LoginScreen = () => {
 
       <Row className="py-3">
         <Col>
-          New Student? +      
-           <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
-             Register
+          New Student? {' '}
+          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
+            Register
+          </Link>
+        </Col>
+      </Row>
+      <Row >
+        <Col>
+          New Teacher? {' '}
+          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
+            Register
           </Link>
         </Col>
       </Row>
