@@ -1,29 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { Link, redirect, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
+import { login } from "../actions/userActions";
 
-const LoginScreen = () => {
+const LoginScreen = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  
-
+  const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
 
   const location = useLocation();
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
+  useEffect(() => {
+    if (userInfo) {
+      // Make sure 'history' is defined before calling 'push'
+      history && history.push(redirect);
+    }
+  }, [history, userInfo, redirect]);
+
   const submitHandler = (e) => {
     e.preventDefault();
-    //Dispatch login
+    dispatch(login(email, password));
   };
 
   return (
     <FormContainer className="py-3">
       <h1 className="py-3">Sign In</h1>
+      {error && <Message variant="danger">{error}</Message>}
+      {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="email">
           <Form.Label style={{ margin: "10px" }}>Email Address</Form.Label>
@@ -55,15 +66,15 @@ const LoginScreen = () => {
 
       <Row className="py-3">
         <Col>
-          New Student? {' '}
+          New Student?{" "}
           <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
             Register
           </Link>
         </Col>
       </Row>
-      <Row >
+      <Row>
         <Col>
-          New Teacher? {' '}
+          New Teacher?{" "}
           <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
             Register
           </Link>
