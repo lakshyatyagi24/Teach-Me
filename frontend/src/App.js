@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
 import CourseScreen from "./screens/CourseScreen";
-// import LoginScreen from './screens/LoginScreen'
+import LoginScreen from "./screens/LoginScreen";
 
 const App = () => {
   return (
@@ -14,9 +14,9 @@ const App = () => {
       <main className="py-3">
         <Container>
           <Routes>
-            {/* <Route path="/login" Component={LoginScreen}  /> */}
+            <Route path="/login" Component={LoginScreen} />
             <Route path="/course/:id" Component={CourseScreen} />
-            <Route path="/" Component={HomeScreen} exact  />
+            <Route path="/" Component={HomeScreen} exact />
           </Routes>
         </Container>
       </main>
