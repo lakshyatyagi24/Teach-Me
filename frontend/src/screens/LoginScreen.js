@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/Message";
@@ -9,7 +9,7 @@ import { login } from "../actions/userActions";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
-  const {search} = useLocation();
+  const { search } = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,21 +19,19 @@ const LoginScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
-  const redirectInUrl = new URLSearchParams(document.location.search)
-  //console.log("the value in redirectInUrl = ", redirectInUrl)
-  const redirect = redirectInUrl ? redirectInUrl.get('redirect') : "/";
+  const redirectInUrl = new URLSearchParams(search);
+  console.log(redirectInUrl)
+  const redirect = redirectInUrl ? redirectInUrl.get("redirect") : "/";
 
   useEffect(() => {
     if (userInfo) {
-      console.log("the adress in redirece is: ", redirect); // Add this line
       navigate(redirect);
     }
   }, [navigate, userInfo, redirect]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("Submit button clicked"); // Add this line
-    dispatch(login({email, password }));
+    dispatch(login(email, password));
   };
 
   return (
