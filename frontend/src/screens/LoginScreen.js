@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Link,
-  redirect,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/Message";
@@ -15,7 +9,7 @@ import { login } from "../actions/userActions";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
-  const {search} = useLocation();
+  const { search } = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,13 +24,15 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
+      console.log("the adress in redirece is: ", redirect); // Add this line
       navigate(redirect);
     }
   }, [navigate, userInfo, redirect]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    console.log("Submit button clicked"); // Add this line
+    dispatch(login({email, password }));
   };
 
   return (
