@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Link,
+  redirect,
   useLocation,
   useNavigate,
   useSearchParams,
@@ -13,24 +14,23 @@ import FormContainer from "../components/FormContainer";
 import { login } from "../actions/userActions";
 
 const LoginScreen = () => {
+  const navigate = useNavigate();
+  const {search} = useLocation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
+
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const redirect = location.search ? location.search.split("=")[1] : "/";
-
-  // const [searchParams] = useSearchParams();
-  // const redirect = searchParams.get("redirect") || '/';
+  const redirectInUrl = new URLSearchParams(search).get("redirect");
+  const redirect = redirectInUrl ? redirectInUrl : "/";
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect) || console.log("Navigating tovffvvfv:", redirect);
+      navigate(redirect);
     }
   }, [navigate, userInfo, redirect]);
 
