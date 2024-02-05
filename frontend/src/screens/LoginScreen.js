@@ -8,30 +8,37 @@ import FormContainer from "../components/FormContainer";
 import { login } from "../actions/userActions";
 
 const LoginScreen = () => {
+  // Hooks for navigation and accessing URL parameters
   const navigate = useNavigate();
   const { search } = useLocation();
 
+  // State for form inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Redux hooks for state management and dispatching actions
   const dispatch = useDispatch();
-
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
+  // Extracting the "redirect" parameter from URL, defaulting to home ("/") if not found
   const redirectInUrl = new URLSearchParams(search);
-  console.log(redirectInUrl)
-  const redirect = redirectInUrl ? redirectInUrl.get("redirect") : "/";
+  const redirect = redirectInUrl.get("redirect") || "/";
 
+  // useEffect to handle redirection post-login based on "userInfo" state
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect);
+      // Validation for redirect to prevent open redirection vulnerabilities
+      // and ensure navigation only to known routes
+      const isValidRedirect = ["/", "/dashboard", "/profile"].includes(redirect);
+      navigate(isValidRedirect ? redirect : '/');
     }
   }, [navigate, userInfo, redirect]);
 
+  // Handler for form submission
   const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(login(email, password));
+    e.preventDefault(); // Prevent default form submission behavior
+    dispatch(login(email, password)); // Dispatch login action with form data
   };
 
   return (
