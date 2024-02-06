@@ -124,7 +124,7 @@ const registerStudent = asyncHandler(async(req, res) =>{
 // @route   POST /api/users/register/teacher
 // @access  Public
 const registerTeacher = asyncHandler(async (req, res) => {
-    const { name, email, password, role} = req.body;
+    const { name, email, password} = req.body;
   
     const userExists = await User.findOne({ email });
   
