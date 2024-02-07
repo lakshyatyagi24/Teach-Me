@@ -6,11 +6,12 @@ import {
 import { thunk } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { courseListReducer } from "./reducers/courseReducers";
-import { userLoginReducer } from "./reducers/userReducers";
+import { userLoginReducer ,userRegisterReducer} from "./reducers/userReducers";
 
 const reducer = combineReducers({
   courseList: courseListReducer,
   userLogin: userLoginReducer,
+  userRegister : userRegisterReducer,
 });
 
 
