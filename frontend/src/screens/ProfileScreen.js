@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 //import FormContainer from "../components/FormContainer";
-import { getUserDetails } from "../actions/userActions";
+import { getUserDetails  , updateUserProfile} from "../actions/userActions";
 
 const ProfileScreen = () => {
   // Hooks for navigation and accessing URL parameters
@@ -26,6 +26,9 @@ const ProfileScreen = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo} = userLogin;
+
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success } = userUpdateProfile;
   // Extracting the "redirect" parameter from URL, defaulting to home ("/") if not found
   const redirectInUrl = new URLSearchParams(search);
   const redirect = redirectInUrl.get("redirect") || "/";
@@ -53,6 +56,7 @@ const ProfileScreen = () => {
         setMessage('Password do not match')
     }else{
         // DISPATCH update profile
+        dispatch(updateUserProfile({id : user._id , name , email , password}))
     }
   };
 
@@ -61,6 +65,7 @@ const ProfileScreen = () => {
     <h2 className="py-3">User Profile</h2>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
+      {success && <Message variant="success">Profile Updated</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
       <Form.Group controlId="name">
