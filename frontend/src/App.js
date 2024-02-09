@@ -7,6 +7,7 @@ import HomeScreen from "./screens/HomeScreen";
 import CourseScreen from "./screens/CourseScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
           <Routes>
             <Route path="/login" Component={LoginScreen} />
             <Route path="/register" Component={RegisterScreen} />
+            <Route path="/profile" Component={ProfileScreen} />
             <Route path="/course/:id" Component={CourseScreen} />
             <Route path="/" Component={HomeScreen} exact />
           </Routes>
