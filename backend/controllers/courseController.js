@@ -59,7 +59,7 @@ const createCourseReview = asyncHandler(async(req, res) =>{
     const course = await Course.findById(req.params.id)
 
     if(course){
-        const alreadyReviewed = courses.reviews.find(r=> r.user.toString()===req.user._id.toString())
+        const alreadyReviewed = course.reviews.find(r=> r.user.toString()===req.user._id.toString())
 
         if(alreadyReviewed){
             res.status(400)
@@ -74,11 +74,11 @@ const createCourseReview = asyncHandler(async(req, res) =>{
             user: req.user._id
         }
 
-        courses.reviews.push(review)
+        course.reviews.push(review)
 
         course.newReviews = course.reviews.length
 
-        course.rating = course.reviews.reduce((acc,item)=> item.rating+acc,0)/courses.reviews.length
+        course.rating = course.reviews.reduce((acc,item)=> item.rating+acc,0)/course.reviews.length
 
         await course.save()
         res.status(201).json({message : 'Review added'})
