@@ -32,10 +32,10 @@ const LoginScreen = () => {
     if (userInfo) {
       // Validation for redirect to prevent open redirection vulnerabilities
       // and ensure navigation only to known routes
-      //const isValidRedirect = ["/", "/dashboard", "/profile"].includes(redirect);
-      //navigate(redirect);
+      const isValidRedirect = ["/", "/dashboard", "/profile"].includes(redirect);
+      navigate(redirect);
     }
-  }, [dispatch]/*[navigate, userInfo, redirect]*/);
+  }, [dispatch][navigate, userInfo, redirect]);
 
   // Handler for form submission
   const submitHandler = (e) => {
