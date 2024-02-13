@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import Student from '../models/studentModel.js'
+import User from '../models/userModel.js'
 
 // @desc Fetch all students
 // @route GET /api/students
@@ -26,45 +27,57 @@ const getStudentById = asyncHandler(async(req, res) =>{
 // @desc Register a new user
 // @route POST /api/students
 // @access Public
-const registerStudent = asyncHandler(async(req, res) =>{
-    const { name , email , password ,studentId,studentDepartment,phone} = req.body
-
-    const studentExists = await Student.findOne({email})
-
-    if (studentExists){
-        res.status(400)
-        throw new Error('Student already exist')
+const registerStudent = asyncHandler(async (req, res) => {
+    const { name, email, password, studentId, studentDepartment, phone } = req.body;
+    
+    // Create or find the User first
+    let user = await User.findOne({ email });
+    if (!user) {
+        user = await User.create({
+            name,
+            email,
+            password
+        });
+    }
+    else{
+        res.status(404)
+        throw new Error('Student is exist')
+    }
+    
+    // Check if studentId already exists to avoid duplication
+    const studentExists = await Student.findOne({ studentId });
+    if (studentExists) {
+        res.status(400);
+        throw new Error('StudentID already exists');
     }
 
+    // Now create the Student with reference to the User
     const student = await Student.create({
-        name,
-        email,
-        password,
-        studentId,
-        studentDepartment,
-        phone
-    })
+        user: user._id,
+        studentId: studentId,
+        studentDepartment: studentDepartment,
+        phone: phone
+    });
 
-    if (student){
+    if (student) {
         res.status(201).json({
-            _id:student._id,
-            name: student.name,
-            email: student.email,
-            studentId:student.studentId,
-            studentDepartment:student.studentDepartment,
-            phone:student.phone,
-            isAdmin: student.isAdmin,
-            token : generateToken(student._id),
-        })
-    }else{
-        res.status(400)
-        throw new Error('Invalid student data')
+            _id: student._id,
+            name: user.name,
+            email: user.email,
+            studentId: student.studentId,
+            studentDepartment: student.studentDepartment,
+            phone: student.phone,
+            token: generateToken(user._id)
+        });
+    } else {
+        res.status(400);
+        throw new Error('Invalid student data');
     }
-})
+});
+
 
 export{
     getAllStudents,
     getStudentById,
     registerStudent,
-
 }

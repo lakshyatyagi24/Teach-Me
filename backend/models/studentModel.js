@@ -2,27 +2,15 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
 const studentSchema = mongoose.Schema({
-    user: {
+    /*user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: [true],
-      },
-    name:{
-        type : String,
-        required: true
-    },
-    email:{
-        type : String,
         required: true,
-        unique : true
-    },
-    password:{
-        type : String,
-        required: true
-    },
+    },*/
     studentId:{
         type : String,
-        required: true
+        required: true,
+        unique: true,
     },
     studentDepartment:{
         type : String,
@@ -51,4 +39,4 @@ studentSchema.pre('save',async function (next){
 
 const Student = mongoose.model('Student',studentSchema)
 
-export default Student
+export default Student;

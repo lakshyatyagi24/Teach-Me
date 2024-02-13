@@ -21,19 +21,21 @@ const LoginScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
-  // Extracting the "redirect" parameter from URL, defaulting to home ("/") if not found
-  const redirectInUrl = new URLSearchParams(search);
-  const redirect = redirectInUrl.get("redirect") || "/";
+  // // Extracting the "redirect" parameter from URL, defaulting to home ("/") if not found
+  // const redirectInUrl = new URLSearchParams(search);
+  // const redirect = redirectInUrl.get("redirect") || "/";
+  const redirectInUrl = new URLSearchParams(search).get('redirect');
+  const redirect = redirectInUrl ? redirectInUrl : '/';
 
   // useEffect to handle redirection post-login based on "userInfo" state
   useEffect(() => {
     if (userInfo) {
       // Validation for redirect to prevent open redirection vulnerabilities
       // and ensure navigation only to known routes
-      const isValidRedirect = ["/", "/dashboard", "/profile"].includes(redirect);
-      navigate(isValidRedirect ? redirect : '/');
+      //const isValidRedirect = ["/", "/dashboard", "/profile"].includes(redirect);
+      //navigate(redirect);
     }
-  }, [navigate, userInfo, redirect]);
+  }, [dispatch]/*[navigate, userInfo, redirect]*/);
 
   // Handler for form submission
   const submitHandler = (e) => {
@@ -78,7 +80,7 @@ const LoginScreen = () => {
       <Row className="py-3">
         <Col>
           New Student?{" "}
-          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
+          <Link to={redirectInUrl ? `/register/student?redirect=${redirect}` : "/register/student"}>
             Register
           </Link>
         </Col>
@@ -86,7 +88,7 @@ const LoginScreen = () => {
       <Row>
         <Col>
           New Teacher?{" "}
-          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
+          <Link to={redirectInUrl ? `/register/teacher?redirect=${redirect}` : "/register/teacher"}>
             Register
           </Link>
         </Col>

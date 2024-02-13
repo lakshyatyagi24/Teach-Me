@@ -1,8 +1,11 @@
 import {
+  STUDENT_REGISTER_FAIL,
+  STUDENT_REGISTER_REQUEST,
+  STUDENT_REGISTER_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
-    USER_DETAILS_SUCCESS,
-    USER_LOGIN_FAIL,
+  USER_DETAILS_SUCCESS,
+  USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
@@ -163,5 +166,73 @@ export const updateUserProfile = (user) => async (dispatch,getState) => {
             ? error.response.data.message
             : error.message,
       });
+  }
+};
+
+export const registerTeacher = ({  name , email , password ,teacherId,teacherDepartment,course,price,grade,phone }) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_REGISTER_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post("/api/users/register/teacher", {  name , email , password ,teacherId,teacherDepartment,course,price,grade,phone }, config);
+
+    dispatch({
+      type: USER_REGISTER_SUCCESS,
+      payload: data,
+    });
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+
+    localStorage.setItem('userInfo', JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_REGISTER_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+
+
+export const registerStudent = ({ name , email , password ,studentId , studentDepartment ,phone}) => async (dispatch) => {
+  try {
+    dispatch({
+      type: STUDENT_REGISTER_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post("/api/students", { name , email , password ,studentId , studentDepartment ,phone}, config);
+
+    dispatch({
+      type: STUDENT_REGISTER_SUCCESS,
+      payload: data,
+    });
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+
+    localStorage.setItem('userInfo', JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: STUDENT_REGISTER_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
   }
 };
