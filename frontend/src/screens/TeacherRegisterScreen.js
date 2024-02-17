@@ -6,7 +6,6 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { registerTeacher } from "../actions/userActions";
-import { set } from "mongoose";
 
 const TeacherRegisterScreen = () => {
   const navigate = useNavigate();
@@ -27,17 +26,18 @@ const TeacherRegisterScreen = () => {
   const dispatch = useDispatch();
 
   // Corrected useSelector hook to access the right state slice
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error, userInfo } = userRegister;
+  const teacherRegister = useSelector((state) => state.teacherRegister);
+  const { loading, error, userInfo } = teacherRegister;
 
   const redirectInUrl = new URLSearchParams(search).get('redirect');
   const redirect = redirectInUrl ? redirectInUrl : '/';
 
+  // Redirect to home screen after successful registration
   useEffect(() => {
     if (userInfo) {
       navigate(redirect);
     }
-  }, [navigate, userInfo, redirect]);
+  }, [navigate, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ const TeacherRegisterScreen = () => {
       setMessage('Passwords do not match');
     } else {
       // Fix: Pass object directly to match the action creator's parameter
-      dispatch(registerTeacher({  name , email , password ,teacherId,teacherDepartment,course,price,grade,phone }));
+      dispatch(registerTeacher( name , email , password , teacherId , teacherDepartment , course , price , grade , phone ));
     }
   };
 

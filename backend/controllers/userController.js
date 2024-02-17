@@ -124,84 +124,46 @@ const updateUserProfile = asyncHandler(async(req, res) =>{
 const registerStudent = asyncHandler(async (req, res) => {
     const { name, email, password, studentId, studentDepartment, phone } = req.body;
 
+    // Check if the email already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
         res.status(400);
-        throw new Error('User already exists');
+        throw new Error('User already exists with this email');
     }
 
-    const studentExists = await Student.findOne({ studentId });
-    if (studentExists) {
-        res.status(400);
-        throw new Error('StudentID already exists');
-    }
-
-    // Assuming the User model handles password encryption
+    // Create a new user if email doesn't exist
     const user = await User.create({
         name,
         email,
-        password,
+        password, // Password hashing is handled in the User model's pre-save middleware
     });
 
-    // Link the Student record with the User record via user field
-    const student = await Student.create({
-        user: user._id,
-        studentId,
-        studentDepartment,
-        phone,
-    });
-
-    if (user && student) {
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: generateToken(user._id),
+    if (user) {
+        // Link the Student record with the User record via user field
+        const student = await Student.create({
+            user: user._id,
+            studentId,
+            studentDepartment,
+            phone,
         });
+
+        if (student) {
+            res.status(201).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                token: generateToken(user._id)
+            });
+        } else {
+            res.status(400);
+            throw new Error('Invalid student data');
+        }
     } else {
         res.status(400);
         throw new Error('Invalid user data');
     }
 });
-
-    /*if (user) {
-        res.status(201).json({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          token: generateToken(user._id),
-        });
-      } else {
-        res.status(400);
-        throw new Error('Invalid user data');
-      }
-    const student = await Student.create({
-        name,
-        email,
-        password,
-        studentId,
-        studentDepartment,
-        phone
-    })
-    
-
-    if (student){
-        res.status(201).json({
-            _id:student._id,
-            name: student.name,
-            email: student.email,
-            studentId:student.studentId,
-            studentDepartment:student.studentDepartment,
-            phone:student.phone,
-            isAdmin: student.isAdmin,
-            token : generateToken(student._id),
-        })
-    }else{
-        res.status(400)
-        throw new Error('Invalid student data')
-    }
-})*/
 
 // @desc    Register a new teacher
 // @route   POST /api/users/register/teacher
@@ -213,10 +175,10 @@ const registerTeacher = asyncHandler(async (req, res) => {
 
     if (userExists) {
         res.status(400);
-        throw new Error('User already exists');
+        throw new Error('User email already exists');
     }
 
-    const teacherExists = await Farmer.findOne({ teacherId: teacherId });
+    const teacherExists = await Teacher.findOne({ teacherId: teacherId });
 
     if (teacherExists) {
         res.status(400);
@@ -224,9 +186,9 @@ const registerTeacher = asyncHandler(async (req, res) => {
     }
 
     const user = await User.create({
-        name,
-        email,
-        password,
+        name : name,
+        email : email,
+        password: password,
         role: 'teacher',
     });
 
@@ -245,11 +207,12 @@ const registerTeacher = asyncHandler(async (req, res) => {
             _id:user._id,
             name: user.name,
             email: user.email,
-            studentId:teacher.studentId,
+            role: user.role,
+            /*studentId:teacher.studentId,
             studentDepartment:teacher.studentDepartment,
             phone:teacher.phone,
-            role: user.role,
-            token : generateToken(teacher._id),
+            role: user.role,*/
+            token : generateToken(user._id),
         })
     }else{
         res.status(400)
