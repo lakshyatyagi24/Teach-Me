@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
@@ -7,36 +7,47 @@ import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { registerStudent } from "../actions/userActions";
 
-
 const StudentRegisterScreen = () => {
-    const navigate = useNavigate();
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [studentId, setStudentId] = useState('');
-    const [studentDepartment, setStudentDepartment] = useState('');
-    const [phone, setPhone] = useState('');
-    const [message, setMessage] = useState(null);
+  // Hooks for navigation and accessing URL parameters
+  const navigate = useNavigate();
+  const { search } = useLocation();
 
-    const dispatch = useDispatch();
-    const userRegister = useSelector((state) => state.userRegister);
-    const { loading, error, userInfo } = userRegister;
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [studentId, setStudentId] = useState('');
+  const [studentDepartment, setStudentDepartment] = useState('');
+  const [phone, setPhone] = useState('');
+  const [message, setMessage] = useState(null);
 
-    useEffect(() => {
-        if (userInfo) {
-            navigate('/');
-        }
-    }, [userInfo, navigate]);
+  // Redux hooks for state management and dispatching actions
+  const dispatch = useDispatch();
+  const studentRegister = useSelector((state) => state.studentRegister);
+  const { loading, error, userInfo } = studentRegister;
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-        if (password !== confirmPassword) {
-            setMessage('Passwords do not match');
-        } else {
-            dispatch(registerStudent({ name, email, password, studentId, studentDepartment, phone }));
-        }
-    };
+  // Extracting the "redirect" parameter from URL, defaulting to home ("/") if not found
+  const redirectInUrl = new URLSearchParams(search);
+  const redirect = redirectInUrl.get("redirect") || "/";
+
+  // useEffect to handle redirection post-login based on "userInfo" state
+  useEffect(() => {
+    if (userInfo) {
+      // Validation for redirect to prevent open redirection vulnerabilities
+      // and ensure navigation only to known routes
+      const isValidRedirect = ["/", "/dashboard", "/profile"].includes(redirect);
+      navigate(isValidRedirect ? redirect : '/');
+    }
+  }, [navigate, userInfo, redirect]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match');
+    } else {
+      dispatch(registerStudent(name, email, password, studentId, studentDepartment, phone));
+    }
+  };
 
   return (
     <FormContainer className="py-3">
@@ -134,12 +145,21 @@ const StudentRegisterScreen = () => {
       </Form>
 
       <Row className="py-3">
-                <Col>
-                    Have an Account? <Link to="/login">Login</Link>
-                </Col>
-            </Row>
+        <Col>
+          Have an Account?{" "}
+          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
+            Login
+          </Link>
+        </Col>
+      </Row>
     </FormContainer>
   );
 };
+
+/*   <Row className="py-3">
+<Col>
+  Have an Account? <Link to="/login">Login</Link>
+</Col>
+</Row>*/
 
 export default StudentRegisterScreen;

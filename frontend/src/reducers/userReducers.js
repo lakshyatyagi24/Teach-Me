@@ -12,6 +12,12 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  STUDENT_REGISTER_REQUEST,
+  STUDENT_REGISTER_SUCCESS,
+  STUDENT_REGISTER_FAIL,
+  TEACHER_REGISTER_REQUEST,
+  TEACHER_REGISTER_SUCCESS,
+  TEACHER_REGISTER_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -74,6 +80,38 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       return { loading: false, success: true , userInfo: action.payload };
 
     case USER_UPDATE_PROFILE_FAIL:
+      return { loading: false, error: action.payload };
+      
+    default:
+      return state;
+  }
+};
+
+export const studentRegisterReducer = (state = {}, action) => {
+  switch (action.type) {
+    case STUDENT_REGISTER_REQUEST:
+      return { loading: true };
+
+    case STUDENT_REGISTER_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+
+    case STUDENT_REGISTER_FAIL:
+      return { loading: false, error: action.payload };
+      
+    default:
+      return state;
+  }
+};
+
+export const teacherRegisterReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TEACHER_REGISTER_REQUEST:
+      return { loading: true };
+
+    case TEACHER_REGISTER_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+
+    case TEACHER_REGISTER_FAIL:
       return { loading: false, error: action.payload };
       
     default:

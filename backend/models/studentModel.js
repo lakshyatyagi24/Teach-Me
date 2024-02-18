@@ -1,12 +1,11 @@
 import mongoose from 'mongoose'
-import bcrypt from 'bcryptjs'
 
 const studentSchema = mongoose.Schema({
-    /*user: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
-    },*/
+        required: [true],
+    },
     studentId:{
         type : String,
         required: true,
@@ -24,7 +23,7 @@ const studentSchema = mongoose.Schema({
     timestamps : true
 })
 
-studentSchema.methods.matchPassword = async function (enteredPassword){
+/*studentSchema.methods.matchPassword = async function (enteredPassword){
     return await bcrypt.compare(enteredPassword,this.password)
 }
 
@@ -35,7 +34,7 @@ studentSchema.pre('save',async function (next){
 
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password,salt)
-})
+})*/
 
 const Student = mongoose.model('Student',studentSchema)
 
