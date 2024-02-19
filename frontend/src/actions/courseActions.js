@@ -5,11 +5,11 @@ import {
   COURSE_LIST_FAIL,
 } from "../constants/courseConstants";
 
-export const listCourses = () => async (dispatch) => {
+export const listCourses = (keyword = '') => async (dispatch) => {
   try {
     dispatch({ type: COURSE_LIST_REQUEST });
 
-    const { data } = await axios.get("/api/courses");
+    const { data } = await axios.get(`/api/courses?keyword=${keyword}`);
     dispatch({
       type: COURSE_LIST_SUCCESS,
       payload: data,

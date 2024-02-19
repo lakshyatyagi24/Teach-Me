@@ -26,6 +26,7 @@ const App = () => {
             <Route path='/register/student'element={<StudentRegisterScreen />}/>
             <Route path="/profile" Component={ProfileScreen} />
             <Route path="/course/:id" Component={CourseScreen} />
+            <Route path="/search/:keyword" Component={HomeScreen}  />
             <Route path="/" Component={HomeScreen} exact />
           </Routes>
         </Container>

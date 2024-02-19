@@ -6,8 +6,12 @@ import Course from "../components/Course";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listCourses } from "../actions/courseActions";
+import { useParams } from "react-router-dom"; // Import useParams to get the keyword from the URL
 
-const HomeScreen = () => {
+const HomeScreen = ({match}) => {
+  const { keyword } = useParams(); // Use useParams to get the keyword from the URL
+  // const keyword = match.params.keyword;
+
   const dispatch = useDispatch();
 
   const courseList = useSelector((state) => state.courseList);
@@ -16,8 +20,8 @@ const HomeScreen = () => {
   //whatever we put inisde the useEffect func will run when the HomeScreen component loads
   //what we want is that our coreses loads to the screen
   useEffect(() => {
-    dispatch(listCourses());
-  }, [dispatch]);
+    dispatch(listCourses(keyword));
+  }, [dispatch , keyword]); // Add keyword to dependency array
 
   return (
     <>

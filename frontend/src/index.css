@@ -9,3 +9,13 @@ main {
 h3 {
     padding: 1rem 0;
 }
+
+/* Target the input text */
+.search-input {
+    color: black !important; /* Makes typed text black */
+}
+
+/* Target the placeholder text */
+.search-input::placeholder {
+    color: black !important; /* Makes placeholder text black */
+}
