@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CourseCarousel = ({ title , description , keywords}) => {
+const CourseCarousel = () => {
   return (
     <div>
     </div>
