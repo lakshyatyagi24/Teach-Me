@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Row, Col, Image, ListGroup } from "react-bootstrap";
 import Rating from "../components/Rating";
+import Meta from "../components/Meta";
 
 const CourseScreen = () => {
   const { id } = useParams();
@@ -19,6 +20,7 @@ const CourseScreen = () => {
 
   return (
     <>
+      <Meta title={course.name} />
       <Link className="btn btn-dark my-3" to="/">
         Go Back
       </Link>

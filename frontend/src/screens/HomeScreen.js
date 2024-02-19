@@ -6,7 +6,9 @@ import Course from "../components/Course";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listCourses } from "../actions/courseActions";
-import { useParams } from "react-router-dom"; // Import useParams to get the keyword from the URL
+import { Link, useParams } from "react-router-dom"; // Import useParams to get the keyword from the URL
+import Meta from "../components/Meta.js";
+import CourseCarousel from "../components/CourseCarousel.js";
 
 const HomeScreen = ({match}) => {
   const { keyword } = useParams(); // Use useParams to get the keyword from the URL
@@ -25,6 +27,8 @@ const HomeScreen = ({match}) => {
 
   return (
     <>
+      <Meta />
+      {!keyword ? <CourseCarousel/> : <Link to='/' className='btn btn-light'>Go Back </Link> }
       <h1>Our Courses</h1>
       {loading ? (
         <Loader />
