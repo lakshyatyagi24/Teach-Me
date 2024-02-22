@@ -26,7 +26,7 @@ const SearchBox = ({ history }) => {
                 type="text"
                 name="q"
                 onChange={(e) => setKeyword(e.target.value)}
-                placeholder="Search Courses..."
+                placeholder="Search Course..."
                 className="mr-sm-2 me-2 search-input" // Add the custom class here"
             ></Form.Control>
             <Button type="submit" variant="outline-success" className="p-2">

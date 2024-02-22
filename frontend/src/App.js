@@ -10,7 +10,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import TeacherRegisterScreen from "./screens/TeacherRegisterScreen";
 import StudentRegisterScreen from "./screens/StudentRegisterScreen";
-// import TeacherScreen from "./screens/TeacherScreen";
+import TeachersScreen from "./screens/TeachersScreen";
 
 const App = () => {
   return (
@@ -20,7 +20,7 @@ const App = () => {
         <Container>
           <Routes>
             <Route path="/login" Component={LoginScreen} />
-            {/* <Route path="/teacher/:id" Component={TeacherScreen} /> */}
+            <Route path="/course/:id/teachers/" Component={TeachersScreen} />
             <Route path="/register" Component={RegisterScreen} />
             <Route path='/register/teacher'element={<TeacherRegisterScreen />}/>
             <Route path='/register/student'element={<StudentRegisterScreen />}/>
