@@ -27,7 +27,7 @@ const App = () => {
             <Route path='/register/teacher'element={<TeacherRegisterScreen />}/>
             <Route path='/register/student'element={<StudentRegisterScreen />}/>
             <Route path="/admin/userlist" Component={UserListScreen} />
-            <Route path="/admin/user/:id/edit" Component={UserEditScreen} />
+            <Route path="/admin/user/:userId/edit" Component={UserEditScreen} />
             <Route path="/profile" Component={ProfileScreen} />
             <Route path="/course/:id" Component={TeachersScreen} />
             <Route path="/search/:keyword" Component={HomeScreen}  />

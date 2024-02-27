@@ -136,8 +136,9 @@ const updateUser = asyncHandler(async(req, res) =>{
     if(user){
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email
-        user.role = req.body.role || user.role
-
+        //user.role = req.body.role || user.role
+        user.role = req.body.isAdmin ? "admin" : "student"; // Update role based on isAdmin flag
+        
         const updatedUser = await user.save()
 
         res.json({

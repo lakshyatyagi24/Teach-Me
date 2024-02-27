@@ -6,7 +6,7 @@ import {
 import { thunk } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { courseListReducer  , courseDetailsReducer, courseDeleteReducer , courseCreateReducer , courseUpdateReducer} from "./reducers/courseReducers";
-import { userLoginReducer ,userRegisterReducer ,userDetailsReducer ,userUpdateProfileReducer , studentRegisterReducer , teacherRegisterReducer , userListReducer , userDeleteReducer} from "./reducers/userReducers";
+import { userLoginReducer ,userRegisterReducer ,userDetailsReducer ,userUpdateProfileReducer , studentRegisterReducer , teacherRegisterReducer , userListReducer , userDeleteReducer , userUpdateReducer} from "./reducers/userReducers";
 
 const reducer = combineReducers({
   courseList: courseListReducer,
@@ -20,6 +20,7 @@ const reducer = combineReducers({
   userUpdateProfile : userUpdateProfileReducer,
   userList : userListReducer,
   userDelete : userDeleteReducer,
+  userUpdate : userUpdateReducer,
   studentRegister : studentRegisterReducer,
   teacherRegister : teacherRegisterReducer,
 
