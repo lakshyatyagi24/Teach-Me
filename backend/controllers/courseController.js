@@ -36,7 +36,7 @@ const getCourseById = asyncHandler(async(req, res) =>{
 // @route PUT /api/courses/:id
 // @access Private/Admin
 const updateCourse = asyncHandler(async(req, res) =>{
-    const {name , price , description , image , brand , category , countInStock,}= req.body
+    const {name , price , description , image /*, brand */, category ,/* countInStock,*/}= req.body
 
     const course = await Course.findById(req.params.id)
 
@@ -45,9 +45,9 @@ const updateCourse = asyncHandler(async(req, res) =>{
         course.price = price
         course.description = description
         course.image = image
-        course.brand = brand
+        //course.brand = brand
         course.category = category
-        course.countInStock = countInStock
+        //course.countInStock = countInStock
 
         const updateCourse = await course.save()
         res.json(updateCourse)
@@ -95,7 +95,7 @@ const createCourseReview = asyncHandler(async(req, res) =>{
     }
 })
 
-// @desc Create a new course
+// @desc Create a course
 // @route POST /api/courses
 // @access Private/Admin
 const createCourse = asyncHandler(async(req, res) =>{
@@ -138,5 +138,5 @@ export {
     createCourseReview,
     createCourse,
     deleteCourse,
-    
+
 }

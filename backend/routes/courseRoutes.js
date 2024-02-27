@@ -7,5 +7,6 @@ router.route('/').get(getCourse).post(protect ,admin, createCourse)
 router.route('/:id/reviews').post(protect , createCourseReview)
 router.route('/:id').get(getCourseById).put(protect , admin, updateCourse).delete(protect , admin, deleteCourse)
 
-export default router
 
+
+export default router
