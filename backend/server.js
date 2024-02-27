@@ -9,6 +9,7 @@ import courseRoutes from "./routes/courseRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
+import uploadRoutes from './routes/uploadRoutes.js';
 
 dotenv.config();
 
@@ -26,10 +27,11 @@ if(process.env.NODE_ENV === 'development'){
   res.send("API is running........");
 });*/
 
-app.use("/api/courses", courseRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/students", studentRoutes);
-app.use("/api/teachers", teacherRoutes);
+app.use('/api/courses', courseRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/teachers', teacherRoutes);
+app.use('/api/upload', uploadRoutes);
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads'))) //making the uploads folder static
@@ -37,8 +39,10 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads'))) //making t
 
 if(process.env.NODE_ENV === 'production'){
   app.use(express.static(path.join(__dirname, '/frontend/build')))
+
   app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')))
-}else{
+
+} else {
   app.get("/", (req, res) => {
     res.send("API is running........");
   });

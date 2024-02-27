@@ -4,6 +4,16 @@ import User from '../models/userModel.js'
 import Student from '../models/studentModel.js'
 import Teacher from '../models/teacherModel.js'
 
+
+
+// @desc Get all users
+// @route GET /api/users
+// @access Private/Admin
+const getUsers = asyncHandler(async(req, res) =>{
+    const users =  await User.find({})
+    res.json(users)
+})
+
 // @desc Fetch all users
 // @route GET /api/users
 // @access Public
@@ -169,58 +179,63 @@ const registerStudent = asyncHandler(async (req, res) => {
 // @route   POST /api/users/register/teacher
 // @access  Public
 const registerTeacher = asyncHandler(async (req, res) => {
-    const { name , email , password ,teacherId,teacherDepartment,course,price,grade,phone} = req.body
+    const { name , email , password , teacherId , teacherDepartment , course , price , grade , phone , image} = req.body
+    //const image = req.file ? req.file.path : ''; // Get the file path from multer's req.file object
 
     const userExists = await User.findOne({ email });
-
     if (userExists) {
         res.status(400);
-        throw new Error('User email already exists');
+        throw new Error('User already exists with this email');
     }
 
-    const teacherExists = await Teacher.findOne({ teacherId: teacherId });
+    const teacherExists = await Teacher.findOne({ teacherId });
 
     if (teacherExists) {
-        res.status(400);
-        throw new Error('TeacherID already exists');
+      res.status(400);
+      throw new Error('teacher ID already exists');
     }
 
+    // Create a new user if email doesn't exist
     const user = await User.create({
-        name : name,
-        email : email,
-        password: password,
+        name,
+        email,
+        password, // Password hashing is handled in the User model's pre-save middleware
         role: 'teacher',
     });
 
-    const teacher = await Teacher.create({
-        user: user._id,
-        teacherId: teacherId,
-        teacherDepartment: teacherDepartment,
-        course : course,
-        price : price,
-        grade : grade,
-        phone : phone,
-    })
-
-    if (user && teacher){
-        res.status(201).json({
-            _id:user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            /*studentId:teacher.studentId,
-            studentDepartment:teacher.studentDepartment,
-            phone:teacher.phone,
-            role: user.role,*/
-            token : generateToken(user._id),
+    if (user) {
+        // Link the Teacher record with the User record via user field
+        const teacher = await Teacher.create({
+            user: user._id,
+            teacherId,
+            teacherDepartment,
+            course,
+            price,
+            grade,
+            phone,
+            image,
         })
-    }else{
-        res.status(400)
-        throw new Error('Invalid teacher data')
+
+        if (teacher) {
+            res.status(201).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                token: generateToken(user._id)
+            });
+        } else {
+            res.status(400);
+            throw new Error('Invalid teacher data');
+        }
+    } else {
+        res.status(400);
+        throw new Error('Invalid user data');
     }
 });
 
 export{
+    getUsers,
     authUser,
     getUserProfile,
     registerUser,

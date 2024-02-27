@@ -1,11 +1,11 @@
 import express from 'express'
 const router = express.Router()
-import { getCourse, getCourseById ,createCourseReview} from '../controllers/courseController.js'
-import { protect  /*admin*/ } from '../middleware/authMiddleware.js'
+import { getCourse, getCourseById ,createCourseReview ,updateCourse , createCourse } from '../controllers/courseController.js'
+import { protect , admin } from '../middleware/authMiddleware.js'
 
-router.route('/').get(getCourse)
+router.route('/').get(getCourse).post(protect ,admin, createCourse)
 router.route('/:id/reviews').post(protect , createCourseReview)
-router.route('/:id').get(getCourseById)
+router.route('/:id').get(getCourseById).put(protect , admin, updateCourse)
 
 export default router
 

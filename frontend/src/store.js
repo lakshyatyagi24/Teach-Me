@@ -5,15 +5,20 @@ import {
 } from "redux";
 import { thunk } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { courseListReducer } from "./reducers/courseReducers";
-import { userLoginReducer ,userRegisterReducer ,userDetailsReducer ,userUpdateProfileReducer , studentRegisterReducer , teacherRegisterReducer} from "./reducers/userReducers";
+import { courseListReducer  , courseDetailsReducer, courseDeleteReducer , courseCreateReducer , courseUpdateReducer} from "./reducers/courseReducers";
+import { userLoginReducer ,userRegisterReducer ,userDetailsReducer ,userUpdateProfileReducer , studentRegisterReducer , teacherRegisterReducer , userListReducer} from "./reducers/userReducers";
 
 const reducer = combineReducers({
   courseList: courseListReducer,
+  courseDetails: courseDetailsReducer,
+  courseDelete: courseDeleteReducer,
+  courseCreate: courseCreateReducer,
+  courseUpdate: courseUpdateReducer,
   userLogin: userLoginReducer,
   userRegister : userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile : userUpdateProfileReducer,
+  userList : userListReducer,
   studentRegister : studentRegisterReducer,
   teacherRegister : teacherRegisterReducer,
 

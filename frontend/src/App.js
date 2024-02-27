@@ -11,6 +11,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import TeacherRegisterScreen from "./screens/TeacherRegisterScreen";
 import StudentRegisterScreen from "./screens/StudentRegisterScreen";
 import TeachersScreen from "./screens/TeachersScreen";
+import UserListScreen from "./screens/UserListScreen";
 
 const App = () => {
   return (
@@ -24,8 +25,9 @@ const App = () => {
             <Route path="/register" Component={RegisterScreen} />
             <Route path='/register/teacher'element={<TeacherRegisterScreen />}/>
             <Route path='/register/student'element={<StudentRegisterScreen />}/>
+            <Route path="/admin/userlist" Component={UserListScreen} />
             <Route path="/profile" Component={ProfileScreen} />
-            <Route path="/course/:id" Component={CourseScreen} />
+            <Route path="/course/:id" Component={TeachersScreen} />
             <Route path="/search/:keyword" Component={HomeScreen}  />
             <Route path="/" Component={HomeScreen} exact />
           </Routes>

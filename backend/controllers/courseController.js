@@ -95,10 +95,31 @@ const createCourseReview = asyncHandler(async(req, res) =>{
     }
 })
 
+// @desc Create a new course
+// @route POST /api/courses
+// @access Private/Admin
+const createCourse = asyncHandler(async(req, res) =>{
+    const course = new Course({
+        user : req.user._id,
+        name : 'Sample name',
+        image : '/images/ilan.jpg',
+        category : 'Sample category',
+        description : 'Sample description',
+        reviews : [],
+        rating : 0,
+        numReviews : 0,
+        price : 0,
+    })
+
+    const createdCourse = await course.save()
+    res.status(201).json(createdCourse) 
+})
+
+
 export {
     getCourse,
     getCourseById,
     updateCourse,
     createCourseReview,
-
+    createCourse,
 }

@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { LinkContainer } from "react-router-bootstrap";
 import { Container, Nav, Navbar , NavDropdown} from "react-bootstrap";
 import {logout} from '../actions/userActions';
-import SearchBox  from "./SearchBox.js";
+import SearchBox  from "./SearchBox.js"; // Add this line
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -39,10 +39,20 @@ const Header = () => {
                 <i className="fa-solid fa-user"></i> Sign In
               </Nav.Link>
             </LinkContainer>}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+                {userInfo && userInfo.role==="admin" && (
+                  <NavDropdown title='Admin' id='adminmenu'>
+                    <LinkContainer to='/admin/userlist'>
+                      <NavDropdown.Item>Users</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/admin/courselist'>
+                      <NavDropdown.Item>Courses</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
     </header>
   );
 };

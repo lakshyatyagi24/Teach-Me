@@ -30,6 +30,11 @@ const teacherSchema = mongoose.Schema({
     phone:{
         type : String,
         required: true
+    },
+    image: {
+        type: String,
+        required: true,
+        default: '/images/ilan.jpg'
     }
 }, {
     timestamps : true

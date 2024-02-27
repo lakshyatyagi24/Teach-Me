@@ -18,6 +18,9 @@ import {
   TEACHER_REGISTER_REQUEST,
   TEACHER_REGISTER_SUCCESS,
   TEACHER_REGISTER_FAIL,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -112,6 +115,22 @@ export const teacherRegisterReducer = (state = {}, action) => {
       return { loading: false, userInfo: action.payload };
 
     case TEACHER_REGISTER_FAIL:
+      return { loading: false, error: action.payload };
+      
+    default:
+      return state;
+  }
+};
+
+export const userListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_LIST_REQUEST:
+      return { loading: true };
+
+    case USER_LIST_SUCCESS:
+      return { loading: false, users: action.payload };
+
+    case USER_LIST_FAIL:
       return { loading: false, error: action.payload };
       
     default:

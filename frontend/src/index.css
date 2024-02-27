@@ -1,14 +1,39 @@
 main {
     min-height: 80vh;
+    background-color: #e0f4ffca;
 }
 
 .rating span {
     margin: 0.1rem;
 }
 
+h1 {
+    font-size: 1.8rem;
+    padding: 1rem 0;
+}
+
+h2 {
+    font-size: 1.4rem;
+    padding: 0.5rem 0;
+}
+
 h3 {
     padding: 1rem 0;
 }
+
+h4 {
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+}
+
+h5 {
+    font-size: 1rem;
+    padding: 0.5rem 0;
+}
+
+
+
+
 
 /* Target the input text */
 .search-input {
@@ -19,3 +44,11 @@ h3 {
 .search-input::placeholder {
     color: black !important; /* Makes placeholder text black */
 }
+
+/* Target the search button */
+.search-button {
+    color: black !important; /* Makes button text black */
+    background-color: white !important; /* Makes button background white */
+}
+
+

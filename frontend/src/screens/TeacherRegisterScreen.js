@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
@@ -21,6 +22,8 @@ const TeacherRegisterScreen = () => {
   const [price, setPrice] = useState(null);
   const [grade, setGrade] = useState(null);
   const [phone, setPhone] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [image, setImage] = useState('');
 
 
   const dispatch = useDispatch();
@@ -37,15 +40,45 @@ const TeacherRegisterScreen = () => {
     if (userInfo) {
       navigate(redirect);
     }
-  }, [navigate, userInfo]);
+  }, [navigate, userInfo , redirect]);
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      const { data } = await axios.post('/api/upload', formData, config);
+
+      setImage(data);
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (uploading) {
+      // If the image is still uploading, inform the user to wait
+      setMessage('Please wait for the image to finish uploading.');
+      return;
+    }
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
     } else {
-      // Fix: Pass object directly to match the action creator's parameter
-      dispatch(registerTeacher( name , email , password , teacherId , teacherDepartment , course , price , grade , phone ));
+      // Proceed with dispatching the registration
+      // The image should contain the path returned by the upload endpoint if a file was uploaded
+      // If the user entered a URL directly, it should contain that URL
+      dispatch(registerTeacher( name , email , password , teacherId , teacherDepartment , course , price , grade , phone  ,image));
     }
   };
 
@@ -168,6 +201,23 @@ const TeacherRegisterScreen = () => {
             onChange={(e) => setPhone(e.target.value)}
             className="py-3"
           ></Form.Control>
+        </Form.Group>
+        <Form.Group className='mt-2' controlId='image'>
+          <Form.Label>Image</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter image url'
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+          ></Form.Control>
+          <Form.File
+            type='file'
+            id='image-file'
+            label='Choose file'
+            custom
+            onChange={uploadFileHandler}
+          ></Form.File>
+          {uploading && <Loader />}
         </Form.Group>
 
         <Button type="submit" variant="primary" style={{ margin: "10px" }}>

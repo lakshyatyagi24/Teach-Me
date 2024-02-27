@@ -10,6 +10,15 @@ const getAllTeachers = asyncHandler(async(req, res) =>{
     res.json(teacher)
 })
 
+// @desc Fetch all teachers that learn a specific course
+// @route GET /api/teachers/course/:course
+// @access Public
+const getTeachers = asyncHandler(async(req, res) =>{
+    const { course } = req.body
+    const teacher =  await Teacher.find({course:req.params.course})
+    res.json(teacher)
+})
+
 // @desc Fetch syngle teacher
 // @route GET /api/teacher/:id
 // @access Public
@@ -69,5 +78,6 @@ export{
     getAllTeachers,
     getTeacherById,
     registerTeacher,
+    getTeachers,
 
 }
