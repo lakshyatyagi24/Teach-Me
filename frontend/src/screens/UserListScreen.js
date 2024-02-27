@@ -19,8 +19,8 @@ const UserListScreen = () => {
     const { userInfo } = userLogin;
 
 
-    /*const userDelete = useSelector((state) => state.userDelete);
-    const { success: successDelete } = userDelete;*/
+    const userDelete = useSelector((state) => state.userDelete);
+    const { success: successDelete } = userDelete;
 
     useEffect(() => {
        if (userInfo && userInfo.role==="admin") {
@@ -29,7 +29,7 @@ const UserListScreen = () => {
             navigate('/login');
             //window.location = '/login';
         }
-    }, [dispatch, navigate , userInfo])//, successDelete]);
+    }, [dispatch, navigate , userInfo, successDelete]);
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure')) {

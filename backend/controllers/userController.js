@@ -14,6 +14,21 @@ const getUsers = asyncHandler(async(req, res) =>{
     res.json(users)
 })
 
+// @desc Delete  user
+// @route DELETE /api/users/:id
+// @access Private/Admin
+const deleteUser = asyncHandler(async(req, res) =>{
+    const user =  await User.findById(req.params.id)
+    if(user){
+        await user.deleteOne()
+        res.json({message:'User removed'})
+    }
+    else{
+        res.status(404)
+        throw new Error('User not found')
+    }
+})
+
 // @desc Fetch all users
 // @route GET /api/users
 // @access Public
@@ -236,6 +251,7 @@ const registerTeacher = asyncHandler(async (req, res) => {
 
 export{
     getUsers,
+    deleteUser,
     authUser,
     getUserProfile,
     registerUser,
