@@ -1,28 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React , { useEffect } from 'react';
+import { LinkContainer } from 'react-router-bootstrap';
 import { listUsers, deleteUser } from '../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import {Table, Button } from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 
 const UserListScreen = () => {
     const dispatch = useDispatch();
+
     const userList = useSelector((state) => state.userList);
     const { loading, error, users } = userList;
 
 
-    const userLogin = useSelector((state) => state.userLogin);
+    /*const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
 
     const userDelete = useSelector((state) => state.userDelete);
-    const { success: successDelete } = userDelete;
+    const { success: successDelete } = userDelete;*/
 
     useEffect(() => {
         dispatch(listUsers());
-       /* if (userInfo && userInfo.isAdmin) {
+       /* if (userInfo && userInfo.role==="admin") {
             dispatch(listUsers());
         } else {
             window.location = '/login';
@@ -62,18 +62,18 @@ const UserListScreen = () => {
                                     <a href={`mailto:${user.email}`}>{user.email}</a>
                                 </td>
                                 <td>
-                                    {user.isAdmin ? (
+                                    {user.role==="admin" ? (
                                         <i className='fas fa-check' style={{ color: 'green' }}></i>
                                     ) : (
                                         <i className='fas fa-times' style={{ color: 'red' }}></i>
                                     )}
                                 </td>
                                 <td>
-                                    <Link to={`/admin/user/${user._id}/edit`}>
+                                    <LinkContainer to={`/user/${user._id}/edit`}>
                                         <Button variant='light' className='btn-sm'>
                                             <i className='fas fa-edit'></i>
                                         </Button>
-                                    </Link>
+                                    </LinkContainer>
                                     <Button
                                         variant='danger'
                                         className='btn-sm'
