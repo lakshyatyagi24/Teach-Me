@@ -13,6 +13,8 @@ import StudentRegisterScreen from "./screens/StudentRegisterScreen";
 import TeachersScreen from "./screens/TeachersScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
+import CourseListScreen from "./screens/CourseListScreen";
+
 
 const App = () => {
   return (
@@ -21,17 +23,18 @@ const App = () => {
       <main className="py-3">
         <Container>
           <Routes>
-            <Route path="/login" Component={LoginScreen} />
-            <Route path="/course/:id/teachers/" Component={TeachersScreen} />
-            <Route path="/register" Component={RegisterScreen} />
+            <Route path="/login" element={<LoginScreen/>} />
+            <Route path="/course/:id/teachers/" element={<TeachersScreen/>} />
+            <Route path="/register" element={<RegisterScreen/>} />
             <Route path='/register/teacher'element={<TeacherRegisterScreen />}/>
             <Route path='/register/student'element={<StudentRegisterScreen />}/>
-            <Route path="/admin/userlist" Component={UserListScreen} />
-            <Route path="/admin/user/:userId/edit" Component={UserEditScreen} />
-            <Route path="/profile" Component={ProfileScreen} />
-            <Route path="/course/:id" Component={TeachersScreen} />
-            <Route path="/search/:keyword" Component={HomeScreen}  />
-            <Route path="/" Component={HomeScreen} exact />
+            <Route path="/admin/userlist" element={<UserListScreen/>} />
+            <Route path="/admin/courselist" element={<CourseListScreen/>} />
+            <Route path="/admin/user/:userId/edit" element={<UserEditScreen/>} />
+            <Route path="/profile" element={<ProfileScreen/>} />
+            <Route path="/course/:id" element={<TeachersScreen/>} />
+            <Route path="/search/:keyword" element={<HomeScreen/>}  />
+            <Route path="/" element={<HomeScreen/>} exact />
           </Routes>
         </Container>
       </main>

@@ -1,20 +1,20 @@
-import { useEffect } from 'react';
+import React , { useEffect , useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation , useParams} from 'react-router-dom';
 import { listCourses, deleteCourse, createCourse } from '../actions/courseActions';
 import { COURSE_CREATE_RESET } from '../constants/courseConstants';
 import axios from 'axios';
-import { Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Form, Button , Row , Col , Table } from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const CourseListScreen = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { keyword } = useParams();
+
+
     const [name, setName] = useState('');
     const [department, setDepartment] = useState('');
     const [description, setDescription] = useState('');
@@ -27,7 +27,7 @@ const CourseListScreen = () => {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
-    const courseCreate = useSelector((state) => state.courseCreate);
+    /*const courseCreate = useSelector((state) => state.courseCreate);
     const {
         loading: loadingCreate,
         error: errorCreate,
@@ -40,37 +40,34 @@ const CourseListScreen = () => {
         loading: loadingDelete,
         error: errorDelete,
         success: successDelete,
-    } = courseDelete;
+    } = courseDelete;*/
 
     useEffect(() => {
-        dispatch({ type: COURSE_CREATE_RESET });
-        if (!userInfo || !userInfo.role==="admin") {
+        if (userInfo && userInfo.role === 'admin') {
+            dispatch(listCourses());
+        } else {
             navigate('/login');
         }
-        if (successCreate) {
-            setName('');
-            setDepartment('');
-            setDescription('');
-            setImage('');
-            setPrice(0);
-            navigate(`/course/${createdCourse._id}`);
-        } else {
-            dispatch(listCourses());
-        }
-    }, [dispatch, navigate, userInfo, successCreate, successDelete, createdCourse]);
+    }, [dispatch, navigate, userInfo]);
 
     const deleteHandler = (id) => {
-        if (window.confirm('Are you sure')) {
-            dispatch(deleteCourse(id));
-        }
+        /*if (window.confirm('Are you sure')) {
+            //dispatch(deleteCourse(id));
+        }*/
     };
 
-    const submitHandler = (e) => {
+    const createCourseHandler = (course) => {
+        //dispatch({ type: COURSE_CREATE_RESET });
+        //navigate('/admin/course/create');
+    };
+
+
+    /*const submitHandler = (e) => {
         e.preventDefault();
         dispatch(createCourse(name, department, description, image, price));
-    };
+    };*/
 
-    const uploadFileHandler = async (e) => {
+    /*const uploadFileHandler = async (e) => {
         const file = e.target.files[0];
         const formData = new FormData();
         formData.append('image', file);
@@ -88,31 +85,33 @@ const CourseListScreen = () => {
         } catch (error) {
             console.error(error);
         }
-    };
+    };*/
 
     return (
-        <div>
-            <h1>My Courses</h1>
-            <Link to='/course/create' className='btn btn-primary my-3'>
-                Create Course
-            </Link>
-            {loadingDelete && <Loader />}
-            {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
-            {loadingCreate && <Loader />}
-            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+        <>
+            <Row className='align-items-center'>
+                <Col>
+                    <h1>Courses</h1>
+                </Col>
+                <Col className='text-right'>
+                    <Button className='my-3' onClick={createCourseHandler}>
+                        <i className='fas fa-plus'></i> Create Course
+                    </Button>
+                </Col>
+            </Row>
+
             {loading ? (
                 <Loader />
             ) : error ? (
                 <Message variant='danger'>{error}</Message>
             ) : (
-                <table className='table table-striped table-bordered table-responsive-sm'>
+                <Table striped bordered hover responsive className='table-sm'>
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>NAME</th>
-                            <th>DEPARTMENT</th>
-                            <th>DESCRIPTION</th>
                             <th>PRICE</th>
+                            <th>DEPARTMENT</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -121,15 +120,18 @@ const CourseListScreen = () => {
                             <tr key={course._id}>
                                 <td>{course._id}</td>
                                 <td>{course.name}</td>
-                                <td>{course.department}</td>
-                                <td>{course.description}</td>
-                                <td>${course.price}</td>
                                 <td>
-                                    <Link to={`/course/${course._id}/edit`}>
+                                    ${course.price}
+                                </td>
+                                <td>
+                                    {course.category}
+                                </td>
+                                <td>
+                                    <LinkContainer to={`/admin/course/${course._id}/edit`}>
                                         <Button variant='light' className='btn-sm'>
                                             <i className='fas fa-edit'></i>
                                         </Button>
-                                    </Link>
+                                    </LinkContainer>
                                     <Button
                                         variant='danger'
                                         className='btn-sm'
@@ -141,9 +143,9 @@ const CourseListScreen = () => {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </Table>
             )}
-        </div>
+        </>
     );
 };
 
