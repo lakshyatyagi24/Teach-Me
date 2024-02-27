@@ -5,29 +5,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Table, Button } from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import { useNavigate } from 'react-router-dom';
 
 const UserListScreen = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const userList = useSelector((state) => state.userList);
     const { loading, error, users } = userList;
 
 
-    /*const userLogin = useSelector((state) => state.userLogin);
+    const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
 
-    const userDelete = useSelector((state) => state.userDelete);
+    /*const userDelete = useSelector((state) => state.userDelete);
     const { success: successDelete } = userDelete;*/
 
     useEffect(() => {
-        dispatch(listUsers());
-       /* if (userInfo && userInfo.role==="admin") {
+       if (userInfo && userInfo.role==="admin") {
             dispatch(listUsers());
         } else {
-            window.location = '/login';
-        }*/
-    }, [dispatch])//, userInfo, successDelete]);
+            navigate('/login');
+            //window.location = '/login';
+        }
+    }, [dispatch, navigate , userInfo])//, successDelete]);
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure')) {
