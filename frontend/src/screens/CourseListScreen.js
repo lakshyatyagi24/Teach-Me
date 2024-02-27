@@ -27,13 +27,13 @@ const CourseListScreen = () => {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
-    /*const courseCreate = useSelector((state) => state.courseCreate);
+    const courseCreate = useSelector((state) => state.courseCreate);
     const {
         loading: loadingCreate,
         error: errorCreate,
         success: successCreate,
         course: createdCourse,
-    } = courseCreate;*/
+    } = courseCreate;
 
     const courseDelete = useSelector((state) => state.courseDelete);
     const {
@@ -43,12 +43,18 @@ const CourseListScreen = () => {
     } = courseDelete;
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 'admin') {
-            dispatch(listCourses());
-        } else {
+        dispatch({ type: COURSE_CREATE_RESET });
+        
+        if (!userInfo.role==='admin') {
             navigate('/login');
         }
-    }, [dispatch, navigate, userInfo , successDelete]);
+        if (successCreate) {
+            navigate(`/admin/course/${createdCourse._id}/edit`);
+        } else {
+            dispatch(listCourses());
+        }
+
+    }, [dispatch, navigate, userInfo , successDelete , successCreate , createdCourse]);
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure')) {
@@ -56,7 +62,8 @@ const CourseListScreen = () => {
         }
     };
 
-    const createCourseHandler = (course) => {
+    const createCourseHandler = () => {
+        dispatch(createCourse());
         //dispatch({ type: COURSE_CREATE_RESET });
         //navigate('/admin/course/create');
     };
@@ -101,7 +108,8 @@ const CourseListScreen = () => {
             </Row>
             {loadingDelete && <Loader />}
             {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
-
+            {loadingCreate && <Loader />}
+            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
 
 
             {loading ? (

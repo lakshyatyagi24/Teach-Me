@@ -79,7 +79,7 @@ export const deleteCourse = (id) => async (dispatch, getState) => {
     dispatch({
       type: COURSE_DELETE_SUCCESS,
     });
-    
+
   } catch (error) {
     dispatch({
       type: COURSE_DELETE_FAIL,
@@ -113,6 +113,7 @@ export const createCourse = () => async (dispatch, getState) => {
       type: COURSE_CREATE_SUCCESS,
       payload: data,
     });
+    
   } catch (error) {
     dispatch({
       type: COURSE_CREATE_FAIL,
