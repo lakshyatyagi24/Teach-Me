@@ -12,7 +12,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 const CourseListScreen = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { keyword } = useParams();
+    //const { keyword } = useParams();
 
 
     const [name, setName] = useState('');
@@ -33,14 +33,14 @@ const CourseListScreen = () => {
         error: errorCreate,
         success: successCreate,
         course: createdCourse,
-    } = courseCreate;
+    } = courseCreate;*/
 
     const courseDelete = useSelector((state) => state.courseDelete);
     const {
         loading: loadingDelete,
         error: errorDelete,
         success: successDelete,
-    } = courseDelete;*/
+    } = courseDelete;
 
     useEffect(() => {
         if (userInfo && userInfo.role === 'admin') {
@@ -48,12 +48,12 @@ const CourseListScreen = () => {
         } else {
             navigate('/login');
         }
-    }, [dispatch, navigate, userInfo]);
+    }, [dispatch, navigate, userInfo , successDelete]);
 
     const deleteHandler = (id) => {
-        /*if (window.confirm('Are you sure')) {
-            //dispatch(deleteCourse(id));
-        }*/
+        if (window.confirm('Are you sure')) {
+            dispatch(deleteCourse(id));
+        }
     };
 
     const createCourseHandler = (course) => {
@@ -99,6 +99,10 @@ const CourseListScreen = () => {
                     </Button>
                 </Col>
             </Row>
+            {loadingDelete && <Loader />}
+            {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+
+
 
             {loading ? (
                 <Loader />
