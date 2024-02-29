@@ -148,6 +148,7 @@ export const updateCourse = (course) => async (dispatch, getState) => {
       type: COURSE_UPDATE_SUCCESS,
       payload: data,
     });
+    
   } catch (error) {
     dispatch({
       type: COURSE_UPDATE_FAIL,

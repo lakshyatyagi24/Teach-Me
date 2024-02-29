@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { listCourseDetails } from "../actions/courseActions";
-import { USER_UPDATE_RESET } from "../constants/userConstants";
+import { listCourseDetails  , updateCourse} from "../actions/courseActions";
+import { COURSE_UPDATE_RESET } from "../constants/courseConstants";
 
 const CourseEditScreen = () => {
 
@@ -29,15 +29,19 @@ const CourseEditScreen = () => {
     const courseDetails = useSelector((state) => state.courseDetails);
     const { loading, error, course } = courseDetails;
 
-    /*const userUpdate = useSelector((state) => state.userUpdate);
+    const courseUpdate = useSelector((state) => state.courseUpdate);
     const {
         loading: loadingUpdate,
         error: errorUpdate,
         success: successUpdate,
-    } = userUpdate;*/
+    } = courseUpdate;
 
     // useEffect to handle redirection post-login based on "userInfo" state
     useEffect(() => {
+        if(successUpdate){
+            dispatch({ type: COURSE_UPDATE_RESET });
+            navigate("/admin/courselist");
+        }else{
             if (!course || !course.name || course._id !== courseId) {
                 dispatch(listCourseDetails(courseId));
             } else {
@@ -47,12 +51,14 @@ const CourseEditScreen = () => {
                 setCategory(course.category);
                 setDescription(course.description);
             }
-    }, [dispatch, courseId, course, navigate]);
+        }
+        
+    }, [dispatch, courseId, course, navigate , successUpdate]);
 
     // Handler for form submission
     const submitHandler = (e) => {
         e.preventDefault(); // Prevent default form submission behavior
-        //dispatch(updateUser({ _id: userId, name, email  , isAdmin: role === "admin" }));
+        dispatch(updateCourse({ _id: courseId, name, price  ,image , category,description}));
     };
 
   return (
@@ -62,6 +68,8 @@ const CourseEditScreen = () => {
         </Link>
         <FormContainer className="py-3">
             <h1 className="py-3">Edit Course</h1>
+            {loadingUpdate && <Loader />}
+            {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
             {loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> :(
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId="name">
