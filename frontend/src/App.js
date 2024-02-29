@@ -14,6 +14,7 @@ import TeachersScreen from "./screens/TeachersScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import CourseListScreen from "./screens/CourseListScreen";
+import CourseEditScreen from "./screens/CourseEditScreen";
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
             <Route path="/admin/userlist" element={<UserListScreen/>} />
             <Route path="/admin/courselist" element={<CourseListScreen/>} />
             <Route path="/admin/user/:userId/edit" element={<UserEditScreen/>} />
+            <Route path="/admin/course/:courseId/edit" element={<CourseEditScreen/>} />
             <Route path="/profile" element={<ProfileScreen/>} />
             <Route path="/course/:id" element={<TeachersScreen/>} />
             <Route path="/search/:keyword" element={<HomeScreen/>}  />
