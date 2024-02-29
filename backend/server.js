@@ -34,7 +34,7 @@ app.use('/api/teachers', teacherRoutes);
 app.use('/api/upload', uploadRoutes);
 
 const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads'))) //making the uploads folder static
+app.use('/uploads', express.static(path.join(__dirname,'/uploads'))) //making the uploads folder static
 
 
 if(process.env.NODE_ENV === 'production'){

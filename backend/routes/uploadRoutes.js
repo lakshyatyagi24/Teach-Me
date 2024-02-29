@@ -1,6 +1,6 @@
 import path from 'path';
 import express from 'express';
-import multer from 'multer';
+import multer from "multer";
 const router = express.Router();
 
 const makeid = (length) => {
