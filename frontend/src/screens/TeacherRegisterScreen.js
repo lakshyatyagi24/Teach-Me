@@ -203,20 +203,21 @@ const TeacherRegisterScreen = () => {
           ></Form.Control>
         </Form.Group>
         <Form.Group className='mt-2' controlId='image'>
-            <Form.Label style={{ margin: "10px" }}>Image</Form.Label>
-            <Form.Control
-                style={{ margin: "10px" }}
-                type="text"
-                placeholder="Enter image url"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-            ></Form.Control>
-            <Form.Control
-                type="file"
-                id="image-file"
-                onChange={uploadFileHandler}
-            />
-            {uploading && <Loader />}
+                    <Form.Label>Image</Form.Label>
+                    <Form.Control
+                        type='text'
+                        placeholder='Enter image url'
+                        value={image}
+                        onChange={(e) => setImage(e.target.value)}
+                    ></Form.Control>
+                    <Form.Control
+                        type='file'
+                        id='image-file'
+                        label='Choose file'
+                        custom
+                        onChange={uploadFileHandler}
+                    />
+                    {uploading && <Loader />}
         </Form.Group>
 
 

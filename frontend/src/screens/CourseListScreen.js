@@ -100,8 +100,8 @@ const CourseListScreen = () => {
                 <Col>
                     <h1>Courses</h1>
                 </Col>
-                <Col className='text-right'>
-                    <Button className='my-3' onClick={createCourseHandler}>
+                <Col className='create-course-col'>
+                    <Button className='my-3 create-course-btn' onClick={createCourseHandler}>
                         <i className='fas fa-plus'></i> Create Course
                     </Button>
                 </Col>
