@@ -28,6 +28,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  TEACHER_LIST_REQUEST,
+  TEACHER_LIST_SUCCESS,
+  TEACHER_LIST_FAIL,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -341,6 +344,36 @@ export const updateUser = (user) => async (dispatch, getState) => {
   catch (error) { 
     dispatch({
       type: USER_UPDATE_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+}
+
+export const listTeachers = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TEACHER_LIST_REQUEST,
+    });
+
+    const { userLogin: { userInfo } } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },     
+    };
+
+    const { data } = await axios.get(`/api/teachers/${id}`, config);
+
+    dispatch({
+      type: TEACHER_LIST_SUCCESS,
+      payload: data,
+    });
+
+
+  } catch (error) { 
+    dispatch({
+      type: TEACHER_LIST_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

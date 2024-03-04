@@ -1,26 +1,40 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
-import { Row, Col, Image, ListGroup } from "react-bootstrap";
-import Rating from "../components/Rating";
-import teachers from "../teachers";
-import Teacher from "../components/Teacher";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
+import Teacher from '../components/Teacher';
+import { listTeachers } from '../actions/userActions';
 
 const TeachersScreen = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
-  const teacher = teachers.find((t) => t._id === id);
+  const teacherList = useSelector((state) => state.teacherList);
+  const { loading, error, teachers } = teacherList;
+
+  useEffect(() => {
+    dispatch(listTeachers(id));
+  }, [dispatch, id]);
+
   return (
     <>
-      <Link className="btn btn-dark my-3" to="/">
-        Go Back
-      </Link>
-      <Row>
-        {teachers.map((teachers) => (
-          <Col key={teachers._id} sm={12} md={6} lg={4} xl={3}>
-            <Teacher teachers={teachers} />
-          </Col>
-        ))}
-      </Row>
+      <Link to='/' className='btn btn-light'>Go Back</Link>
+      <h1>Our Teachers</h1>
+      {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+        <Row>
+          {teachers && teachers.length > 0 ? (
+            teachers.map((teacher) => (
+              <Col key={teacher._id} sm={12} md={6} lg={4} xl={3}>
+                <Teacher teacher={teacher} />
+              </Col>
+            ))
+          ) : (
+            <Message>No teachers found</Message>
+          )}
+        </Row>
+      )}
     </>
   );
 };

@@ -4,8 +4,7 @@ import { getAllTeachers , getTeacherById , registerTeacher  ,getTeachers} from '
 
 
 router.route('/').get(getAllTeachers)
-router.route('/:id').get(getTeacherById)
+router.route('/:id').get(getTeachers)
 router.route('/').post(registerTeacher)
-router.route('/').get(getTeachers)
 
 export default router

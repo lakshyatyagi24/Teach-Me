@@ -2,31 +2,37 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card, CardBody } from "react-bootstrap";
 import Rating from "./Rating";
-import teachers from "../teachers";
+import Message from "./Message";
 
-const Teacher = ({teachers}) => {
+const Teacher = ({ teacher }) => {
+  if (!teacher) {
+    // Error handling if teacher is undefined
+    console.error('Teacher prop is undefined');
+    return <Message>Teacher information is missing</Message>;
+  }
+
   return (
     <Card className="my-3 p-3 rounded">
-      <Link to={`/teacher/${teachers._id}`}>
-        <Card.Img src={teachers.image} variant="top" />
+      <Link to={`/teacher/${teacher._id}`}>
+        <Card.Img src={teacher.image} variant="top" />
       </Link>
 
       <Card.Body>
-        <a href={`/teacher/${teachers._id}`}>
+        <a href={`/teacher/${teacher._id}`}>
           <Card.Title as="div" style={{ textAlign: "center" }}>
-            {teachers.name}
+            {teacher.name}
           </Card.Title>
         </a>
         <Card.Text as="div">
           <CardBody>
-            <strong>{teachers.name}</strong>
+            <strong>{teacher.name}</strong>
           </CardBody>
           <Rating
-            value={teachers.rating}
-            text={` ${teachers.numReviews} reviews`}
+            value={teacher.rating}
+            text={` ${teacher.numReviews} reviews`}
           />
         </Card.Text>
-        <Card.Text as="h3">${teachers.price}</Card.Text>
+        <Card.Text as="h3">${teacher.price}</Card.Text>
       </Card.Body>
     </Card>
   );

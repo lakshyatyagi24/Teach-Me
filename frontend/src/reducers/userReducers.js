@@ -29,6 +29,9 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
   USER_UPDATE_RESET,
+  TEACHER_LIST_REQUEST,
+  TEACHER_LIST_SUCCESS,
+  TEACHER_LIST_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -184,3 +187,18 @@ export const userUpdateReducer = (state = { user: {} }, action) => {
   }
 }
 
+export const teacherListReducer = (state = { teachers: [] }, action) => {
+  switch (action.type) {
+    case TEACHER_LIST_REQUEST:
+      return { loading: true, teachers: [] };
+
+    case TEACHER_LIST_SUCCESS:
+      return { loading: false, teachers: action.payload };
+
+    case TEACHER_LIST_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
