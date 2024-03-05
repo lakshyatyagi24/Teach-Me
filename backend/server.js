@@ -10,6 +10,8 @@ import userRoutes from "./routes/userRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
 import uploadRoutes from './routes/uploadRoutes.js';
+import scheduleRoutes from './routes/scheduleRoutes.js';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
@@ -27,11 +29,15 @@ if(process.env.NODE_ENV === 'development'){
   res.send("API is running........");
 });*/
 
+app.use(bodyParser.json());
+
 app.use('/api/courses', courseRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/teachers', teacherRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/schedule', scheduleRoutes);
+
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname,'/uploads'))) //making the uploads folder static

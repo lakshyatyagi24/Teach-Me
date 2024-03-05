@@ -8,7 +8,7 @@ import Teacher from '../components/Teacher';
 import { listTeachers } from '../actions/userActions';
 
 const TeachersScreen = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // 'id' here is the courseId
   const dispatch = useDispatch();
 
   const teacherList = useSelector((state) => state.teacherList);
@@ -27,7 +27,8 @@ const TeachersScreen = () => {
           {teachers && teachers.length > 0 ? (
             teachers.map((teacher) => (
               <Col key={teacher._id} sm={12} md={6} lg={4} xl={3}>
-                <Teacher teacher={teacher} />
+                {/* Pass the 'id' as 'courseId' to the Teacher component */}
+                <Teacher teacher={teacher} courseId={id} />
               </Col>
             ))
           ) : (

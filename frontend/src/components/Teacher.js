@@ -4,7 +4,7 @@ import { Card, CardBody } from "react-bootstrap";
 import Rating from "./Rating";
 import Message from "./Message";
 
-const Teacher = ({ teacher }) => {
+const Teacher = ({ teacher, courseId }) => {
   if (!teacher) {
     // Error handling if teacher is undefined
     console.error('Teacher prop is undefined');
@@ -13,16 +13,17 @@ const Teacher = ({ teacher }) => {
 
   return (
     <Card className="my-3 p-3 rounded">
-      <Link to={`/teacher/${teacher._id}`}>
+      {/* Use the 'courseId' prop to construct the link */}
+      <Link to={`/course/${courseId}/${teacher._id}/schedule`}>
         <Card.Img src={teacher.image} variant="top" />
       </Link>
 
       <Card.Body>
-        <a href={`/teacher/${teacher._id}`}>
+        <Link to={`/course/${courseId}/${teacher._id}/schedule`}>
           <Card.Title as="div" style={{ textAlign: "center" }}>
             {teacher.name}
           </Card.Title>
-        </a>
+        </Link>
         <Card.Text as="div">
           <CardBody>
             <strong>{teacher.name}</strong>

@@ -1,0 +1,30 @@
+.schedule-container {
+    margin: 20px;
+    overflow-x: auto;
+  }
+  
+  .schedule-container table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .schedule-container th, .schedule-container td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 8px;
+  }
+  
+  .schedule-container th {
+    background-color: #f2f2f2;
+  }
+  
+  .schedule-container td.booked {
+    background-color: #ff6666; /* Red for booked slots */
+    cursor: not-allowed;
+  }
+  
+  .schedule-container td.available {
+    background-color: #66ff66; /* Green for available slots */
+    cursor: pointer;
+  }
+  
