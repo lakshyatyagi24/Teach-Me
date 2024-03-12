@@ -209,6 +209,7 @@ const registerStudent = asyncHandler(async (req, res) => {
     if (user) {
         // Link the Student record with the User record via user field
         const student = await Student.create({
+            _id: user._id,
             user: user._id,
             studentId,
             studentDepartment,
@@ -276,6 +277,7 @@ const registerTeacher = asyncHandler(async (req, res) => {
     if (user) {
         // Link the Teacher record with the User record via user field
         const teacher = await Teacher.create({
+            _id: user._id,
             user: user._id,
             teacherId,
             teacherDepartment,

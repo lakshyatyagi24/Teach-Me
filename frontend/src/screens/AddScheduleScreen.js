@@ -69,8 +69,11 @@ const AddScheduleScreen = () => {
     };
     try {
       await axios.post('/api/schedule/add', { schedule, courseId: selectedCourse }, config);
+      
       alert('Schedule added successfully!');
+
       setSchedule({});
+      
     } catch (error) {
       alert(`Failed to add the schedule: ${error.response?.data?.message || error.message}`);
     }

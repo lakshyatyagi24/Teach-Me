@@ -57,3 +57,76 @@ h5 {
     justify-content: flex-end; /* Align to the end (right) of the flex container */
   }
 
+  .bg-success {
+    background-color: #28a745 !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+}
+/* Base table styles */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+}
+
+/* Striped rows for better readability */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Hover effect for rows */
+.table-hover tbody tr:hover {
+    color: #212529;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* Base cell styles */
+.table td,
+.table th {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Highlight for available slots */
+.available {
+    background-color: #e2f4ea; /* A softer green */
+    color: #3a5335; /* A darker shade for better contrast */
+    font-weight: bold; /* Make it pop a little */
+}
+
+/* Subtle border and rounded corners for the table */
+.table {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Make the header a bit more pronounced */
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Align header and body columns */
+.table thead th,
+.table tbody td {
+    text-align: center;
+}
+
+/* Style the DATE column differently for emphasis */
+.table th.date-column {
+    background-color: #e9ecef;
+    color: #495057;
+    font-weight: 500;
+}
+
+/* Adjust the first column width to be narrower */
+.table td:first-child,
+.table th:first-child {
+    width: 10%;
+}
+
