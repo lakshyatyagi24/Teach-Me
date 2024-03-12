@@ -1,6 +1,6 @@
 import Course from '../models/courseModel.js'
 import asyncHandler from 'express-async-handler'
-
+import Teacher from '../models/teacherModel.js'
 
 
 // @desc Fetch all courses
@@ -130,6 +130,27 @@ const deleteCourse = asyncHandler(async(req, res) =>{
     }
 })
 
+// @desc Get courses for a teacher
+// @route GET /api/courses/teacher/courses
+// @access Private
+const getCoursesForTeacher = asyncHandler(async (req, res) => {
+    const teacherId = req.user._id; // Assuming you have teacherId in the user model or find it via associated Teacher model
+    const id = teacherId.toString(); // Converts ObjectId to string
+    
+    // Find the teacher's courses using the Teacher model and return only the 'course' field
+    const courses = await Teacher.find({ user: id }, 'course -_id');
+    
+    // Check if courses exist and map over them to return an array of course names
+    if (courses && courses.length > 0) {
+      const courseNames = courses.map(course => course.course);
+      //console.log("courseName : " , courseNames)
+      res.json(courseNames); // This will return an array like ['Algebra', 'Hedva']
+    } else {
+      res.status(404).send('No courses found for the specified teacher');
+    }
+  });
+  
+
 
 export {
     getCourse,
@@ -138,5 +159,6 @@ export {
     createCourseReview,
     createCourse,
     deleteCourse,
+    getCoursesForTeacher,
 
 }

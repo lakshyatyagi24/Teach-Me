@@ -65,6 +65,37 @@ const bookTimeSlot = asyncHandler(async (req, res) => {
     }
     res.status(200).json(updatedSchedule);
   });
+
+  // Add schedule
+  // @desc Add schedule
+  // @route POST /api/schedule/add
+  // @access Private
+  const addSchedule = asyncHandler(async (req, res) => {
+    const { schedule, courseId } = req.body; // courseId should be sent from the frontend
+    const teacherId = req.user._id;
+    
+    console.log('Adding schedule for course:', courseId,',Teacher Id :',teacherId.toString(), ',Schedule:', schedule);
+    
+    const dates = Object.keys(schedule);
+    const times = Object.values(schedule).flat(); // Flatten the array of arrays to get a single array of times
+    
+    try {
+      const createdSchedule = new Schedule({
+        teacher: teacherId,
+        course: courseId, // Save the courseId to the schedule
+        dates: dates,
+        times: times,
+        bookings: {} // Initialize as an empty object or however you need
+      });
+  
+      await createdSchedule.save();
+      res.status(201).json(createdSchedule);
+    } catch (error) {
+      // Log the error and send a 500 response
+      console.error('Error adding schedule:', error);
+      res.status(500).send('Server Error');
+    }
+  });
   
 
 /*const bookTimeSlot = asyncHandler(async(req, res) =>{
@@ -86,4 +117,4 @@ const bookTimeSlot = asyncHandler(async (req, res) => {
 }
 )*/
 
-export { getSchedules, bookTimeSlot }
+export { getSchedules, bookTimeSlot , addSchedule }

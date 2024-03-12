@@ -39,6 +39,13 @@ const Header = () => {
                 <i className="fa-solid fa-user"></i> Sign In
               </Nav.Link>
             </LinkContainer>}
+               {userInfo && userInfo.role === 'teacher' && (
+                  <LinkContainer to="/teacher/schedule/add">
+                    <Nav.Link>
+                      <i className="fas fa-calendar-plus"></i> Add Schedule
+                    </Nav.Link>
+                  </LinkContainer>
+                )}
                 {userInfo && userInfo.role==="admin" && (
                   <NavDropdown title='Admin' id='adminmenu'>
                     <LinkContainer to='/admin/userlist'>

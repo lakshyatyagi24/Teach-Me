@@ -240,6 +240,18 @@ const registerTeacher = asyncHandler(async (req, res) => {
     const { name , email , password , teacherId , teacherDepartment , course , price , grade , phone , image} = req.body
     //const image = req.file ? req.file.path : ''; // Get the file path from multer's req.file object
 
+     // Check if the email is provided
+     if (!email) {
+        res.status(400);
+        throw new Error('Email is required');
+    }
+
+    // Check if the teacher ID is provided
+    if (!teacherId) {
+        res.status(400);
+        throw new Error('Teacher ID is required');
+    }
+    
     const userExists = await User.findOne({ email });
     if (userExists) {
         res.status(400);

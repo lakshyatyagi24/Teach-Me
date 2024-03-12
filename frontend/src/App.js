@@ -16,7 +16,7 @@ import UserEditScreen from "./screens/UserEditScreen";
 import CourseListScreen from "./screens/CourseListScreen";
 import CourseEditScreen from "./screens/CourseEditScreen";
 import ScheduleScreen from './screens/ScheduleScreen';
-
+import AddScheduleScreen from './screens/AddScheduleScreen';
 
 const App = () => {
   return (
@@ -35,6 +35,7 @@ const App = () => {
             <Route path="/admin/user/:userId/edit" element={<UserEditScreen/>} />
             <Route path="/admin/course/:courseId/edit" element={<CourseEditScreen/>} />
             <Route path="/course/:courseId/:teacherId/schedule" element={<ScheduleScreen />} />
+            <Route path="/teacher/schedule/add" element={<AddScheduleScreen />} />
             <Route path="/profile" element={<ProfileScreen/>} />
             <Route path="/course/:id" element={<TeachersScreen/>} />
             <Route path="/search/:keyword" element={<HomeScreen/>}  />
