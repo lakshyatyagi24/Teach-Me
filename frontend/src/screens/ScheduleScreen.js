@@ -14,101 +14,128 @@ const ScheduleScreen = () => {
     const [error, setError] = useState('');
 
     const { courseId, teacherId } = useParams();
+    // Define all possible times
+    const allTimes = [
+        "8:00", "9:00", "10:00", "11:00", "12:00", 
+        "13:00", "14:00", "15:00", "16:00", "17:00", 
+        "18:00", "19:00", "20:00"
+    ];
+
 
     useEffect(() => {
         const fetchSchedule = async () => {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            if (userInfo) {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${userInfo.token}`,
-                    },
-                };
-                try {
-                    setLoading(true);
-                    const response = await axios.get(`/api/schedule/${courseId}/${teacherId}`, config);
-                    //console.log('API Response:', response);
-                    
-                    // Assuming each item in the response array has 'date', 'times', and 'bookings'
-                    const scheduleList = response.data;
-    
-                    // Extract dates and times
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                if (userInfo && userInfo.token) {
+                    const { data: scheduleList } = await axios.get(
+                        `/api/schedule/${courseId}/${teacherId}`,
+                        { headers: { Authorization: `Bearer ${userInfo.token}` } }
+                    );
+
                     const dates = scheduleList.map(item => item.date);
-                    const times = scheduleList.reduce((acc, item) => {
-                        acc.push(...item.times);
-                        return acc;
-                    }, []);
-    
-                    // Assuming bookings is an object with date keys and time values
                     const bookings = scheduleList.reduce((acc, item) => {
-                        acc[item.date] = item.bookings;
+                        acc[item.date] = allTimes.reduce((timesAcc, time) => {
+                            timesAcc[time] = 'Booked'; // Default to booked
+                            return timesAcc;
+                        }, {});
+
+                        item.times.forEach(timeSlot => {
+                            if (timeSlot.booked === false) {
+                                acc[item.date][timeSlot.time] = 'Available';
+                            }
+                        });
+
                         return acc;
                     }, {});
-    
-                    // Use these extracted values to create the formattedData
-                    const formattedData = {
+
+                    setScheduleData(prev => ({
+                        ...prev,
                         dates,
-                        times,
+                        times: allTimes,
                         bookings,
-                        // Add the teacher name extraction logic as needed
-                        teacherName: '',
-                    };
-                    //console.log("formattedData", formattedData);
-                    setScheduleData(formattedData);
-                    setLoading(false);
-                } catch (err) {
-                    console.error('Fetching Schedule Error:', err);
-                    setError(err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message);
-                    setLoading(false);
+                    }));
                 }
+            } catch (error) {
+                setError(error.response?.data?.message || error.message);
+            } finally {
+                setLoading(false);
             }
         };
-    
+
         fetchSchedule();
     }, [courseId, teacherId]);
     
+    
+      
+
+    const handleSlotClick = async (date, time) => {
+        // Check if the slot is already booked
+        const slotStatus = scheduleData.bookings[date][time];
+        const isBooked = slotStatus === 'Booked';
+    
+        // Update the local state to reflect the change immediately
+        setScheduleData(prevState => {
+            const updatedBookings = { ...prevState.bookings };
+            updatedBookings[date][time] = isBooked ? 'Available' : 'Booked';
+            return { ...prevState, bookings: updatedBookings };
+        });
+    
+        // Update the database
+        try {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            if (userInfo) {
+                const config = {
+                    headers: { Authorization: `Bearer ${userInfo.token}` },
+                };
+                const requestBody = {
+                    date, time, isBooked: !isBooked,
+                };
+                await axios.put(`/api/schedule/update`, requestBody, config);
+            }
+        } catch (error) {
+            console.error('Error updating the schedule:', error);
+            // Rollback state update if there's an error
+            setScheduleData(prevState => {
+                const updatedBookings = { ...prevState.bookings };
+                updatedBookings[date][time] = isBooked ? 'Booked' : 'Available';
+                return { ...prevState, bookings: updatedBookings };
+            });
+        }
+    };
+    
+    
+    
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
 
     return (
         <div className="schedule-container">
-            {loading ? (
-                <p>Loading...</p>
-            ) : error ? (
-                <p>Error: {error}</p>
-            ) : (
-                <>
-                    <h2>Schedule for {scheduleData.teacherName}</h2>
-                    <Table striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            <th className="date-column">Date</th>
-                            {scheduleData.dates?.map((date, index) => (
-                                <th key={index}>{date}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                        <tbody>
-                            {scheduleData.times?.map((time, index) => (
-                                <tr key={index}>
-                                    <td>{time}</td>
-                                    {scheduleData.dates?.map((date, dateIndex) => {
-                                        const timesForDate = scheduleData.bookings[date];
-                                        const isBooked = Array.isArray(timesForDate) && timesForDate.includes(time);
-                                        const cellClass = isBooked ? 'booked' : 'available'; // Use the classes defined in the CSS
-                                        return (
-                                            <td
-                                                key={`${date}-${time}`}
-                                                className={cellClass} // Apply the class here
-                                            >
-                                                {isBooked ? 'Booked' : 'Available'}
-                                            </td>
-                                        );
-                                    })}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </>
-            )}
+            <h2>Schedule for {scheduleData.teacherName}</h2>
+            <Table striped bordered hover responsive>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {scheduleData.dates.map(date => (
+                        allTimes.map((time, index) => (
+                            <tr key={`${date}-${time}-${index}`}>
+                                {index === 0 && <td rowSpan={allTimes.length}>{date}</td>}
+                                <td>{time}</td>
+                                <td
+                                    className={scheduleData.bookings[date][time] === 'Available' ? 'available' : 'booked'}
+                                    onClick={() => handleSlotClick(date, time)}
+                                >
+                                    {scheduleData.bookings[date][time]}
+                                </td>
+                            </tr>
+                        ))
+                    ))}
+                </tbody>
+            </Table>
         </div>
     );
 };

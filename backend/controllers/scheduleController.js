@@ -10,7 +10,31 @@ import Course from '../models/courseModel.js'
 // @desc Fetch all schedules
 // @route GET /api/schedule/:courseId/:teacherId
 // @access Private
-const getSchedules = asyncHandler(async(req, res) =>{
+const getSchedules = asyncHandler(async (req, res) => {
+  const { courseId, teacherId } = req.params;
+  const course = await Course.findById(courseId);
+
+  if (!course) {
+    return res.status(404).json({ message: 'Course not found.' });
+  }
+
+  const schedule = await Schedule.findOne({ course: course.name, teacher: teacherId });
+
+  if (!schedule) {
+    return res.status(404).json({ message: 'No schedule found for this course and teacher.' });
+  }
+
+  const formattedSchedule = schedule.slots.map(slot => ({
+    date: slot.date,
+    times: slot.times.map(timeSlot => ({
+      time: timeSlot.time,
+      booked: timeSlot.booked
+    }))
+  }));
+
+  res.json(formattedSchedule);
+});
+/*const getSchedules = asyncHandler(async(req, res) =>{
   const { courseId, teacherId } = req.params;
   const course = await Course.findById(courseId); // This should be the actual course name
   console.log("courseName : " , course.name , " , teacherId : " , teacherId)
@@ -38,7 +62,7 @@ const getSchedules = asyncHandler(async(req, res) =>{
   } catch (error) {
     res.status(500).send('Server Error');
   }
-})
+})*/
 
 // In your controller for handling the booking
 const bookTimeSlot = asyncHandler(async (req, res) => {
@@ -88,6 +112,33 @@ const bookTimeSlot = asyncHandler(async (req, res) => {
       res.status(500).send('Server Error');
     }
   });
+
+  // Update schedules
+  // @desc Update schedules
+  // @route PUT /api/schedule/update
+  // @access Private
+  const updateSchedules = asyncHandler(async (req, res) => {
+    const { date, time, isBooked } = req.body;
+    const teacherId = req.user._id;
+
+    const updatedSchedule = await Schedule.findOne({ teacher: teacherId });
+    if (!updatedSchedule) {
+      res.status(404).send('Schedule not found');
+      return;
+    }
+
+    const slot = updatedSchedule.slots.find(slot => slot.date === date);
+    if (slot) {
+      const timeSlot = slot.times.find(t => t.time === time);
+      if (timeSlot) {
+        timeSlot.booked = isBooked;
+      }
+    }
+
+    await updatedSchedule.save(); // Save the updated schedule to the database
+    res.json(updatedSchedule);
+});
+
   
 
 /*const bookTimeSlot = asyncHandler(async(req, res) =>{
@@ -109,4 +160,4 @@ const bookTimeSlot = asyncHandler(async (req, res) => {
 }
 )*/
 
-export { getSchedules, bookTimeSlot , addSchedule }
+export { getSchedules, bookTimeSlot , addSchedule , updateSchedules }
