@@ -139,6 +139,64 @@ const bookTimeSlot = asyncHandler(async (req, res) => {
     res.json(updatedSchedule);
 });
 
+// Add or Update schedule
+// @desc Add or Update a schedule for a course
+// @route POST /api/schedule/addOrUpdate
+// @access Private
+const addOrUpdateSchedule = asyncHandler(async (req, res) => {
+  const { scheduleData, courseId } = req.body; // scheduleData should be the new schedule to add/update
+  const teacherId = req.user._id; // Make sure this is being set correctly
+  
+  if (!scheduleData || !scheduleData.slots) {
+    return res.status(400).json({ message: 'scheduleData and scheduleData.slots are required.' });
+  }
+
+  try {
+    const existingSchedule = await Schedule.findOne({ teacher: teacherId, course: courseId });
+    
+    if (existingSchedule) {
+      // Update existing schedule by merging slots
+      scheduleData.slots.forEach(newSlot => {
+        const existingSlotIndex = existingSchedule.slots.findIndex(slot => slot.date === newSlot.date);
+        if (existingSlotIndex > -1) {
+          // Merge times for the same date
+          const existingTimes = existingSchedule.slots[existingSlotIndex].times;
+          newSlot.times.forEach(newTime => {
+            const timeIndex = existingTimes.findIndex(time => time.time === newTime.time);
+            if (timeIndex > -1) {
+              // Update existing time slot
+              existingTimes[timeIndex].booked = newTime.booked;
+            } else {
+              // Add new time slot
+              existingTimes.push(newTime);
+            }
+          });
+        } else {
+          // Add new slot for new date
+          existingSchedule.slots.push(newSlot);
+        }
+      });
+      
+      await existingSchedule.save();
+      res.status(200).json(existingSchedule);
+    } else {
+      // Create new schedule
+      const newSchedule = new Schedule({
+        teacher: teacherId,
+        course: courseId,
+        slots: scheduleData.slots
+      });
+      const createdSchedule = await newSchedule.save();
+      res.status(201).json(createdSchedule);
+    }
+  } catch (error) {
+    console.error('Error adding or updating schedule:', error);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+
   
 
 /*const bookTimeSlot = asyncHandler(async(req, res) =>{
@@ -160,4 +218,4 @@ const bookTimeSlot = asyncHandler(async (req, res) => {
 }
 )*/
 
-export { getSchedules, bookTimeSlot , addSchedule , updateSchedules }
+export { getSchedules, bookTimeSlot , addSchedule , updateSchedules , addOrUpdateSchedule }

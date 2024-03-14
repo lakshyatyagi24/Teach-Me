@@ -69,8 +69,15 @@ const ScheduleScreen = () => {
       
 
     const handleSlotClick = async (date, time) => {
-        // Check if the slot is already booked
+        // Get the current slot status
         const slotStatus = scheduleData.bookings[date][time];
+    
+        // If the slot is already booked, don't allow it to be changed
+        if (slotStatus === 'Booked') {
+            return;
+        }
+    
+        // Proceed with toggling the status
         const isBooked = slotStatus === 'Booked';
     
         // Update the local state to reflect the change immediately
@@ -102,6 +109,7 @@ const ScheduleScreen = () => {
             });
         }
     };
+    
     
     
     

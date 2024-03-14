@@ -17,7 +17,7 @@ const AddScheduleScreen = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
   const dates = getNext7Days();
-  const times = ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+  const times = ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00' , '18:00', '19:00', '20:00'];
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -67,17 +67,29 @@ const AddScheduleScreen = () => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
+  
+    // Transforming the state to match the backend expected format
+    const scheduleData = {
+      slots: Object.entries(schedule).map(([date, times]) => {
+        return {
+          date,
+          times: times.map(time => ({ time, booked: false })) // or true, depending on your logic
+        };
+      })
+    };
+  
     try {
-      await axios.post('/api/schedule/add', { schedule, courseId: selectedCourse }, config);
+      await axios.post('/api/schedule/addOrUpdate', { scheduleData, courseId: selectedCourse }, config);
       
       alert('Schedule added successfully!');
-
+  
       setSchedule({});
       
     } catch (error) {
       alert(`Failed to add the schedule: ${error.response?.data?.message || error.message}`);
     }
   };
+  
 
   return (
     <>
