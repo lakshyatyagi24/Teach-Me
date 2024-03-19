@@ -21,7 +21,6 @@ const ScheduleScreen = () => {
         "18:00", "19:00", "20:00"
     ];
 
-
     useEffect(() => {
         const fetchSchedule = async () => {
             try {
@@ -31,23 +30,29 @@ const ScheduleScreen = () => {
                         `/api/schedule/${courseId}/${teacherId}`,
                         { headers: { Authorization: `Bearer ${userInfo.token}` } }
                     );
-
-                    const dates = scheduleList.map(item => item.date);
+    
+                    // Filter out the dates that are before today's date
+                    const today = new Date();
+                    const dates = scheduleList
+                        .map(item => item.date)
+                        .filter(date => new Date(date) >= today);
+    
                     const bookings = scheduleList.reduce((acc, item) => {
-                        acc[item.date] = allTimes.reduce((timesAcc, time) => {
-                            timesAcc[time] = 'Booked'; // Default to booked
-                            return timesAcc;
-                        }, {});
-
-                        item.times.forEach(timeSlot => {
-                            if (timeSlot.booked === false) {
-                                acc[item.date][timeSlot.time] = 'Available';
-                            }
-                        });
-
+                        if (new Date(item.date) >= today) {
+                            acc[item.date] = allTimes.reduce((timesAcc, time) => {
+                                timesAcc[time] = 'Booked'; // Default to booked
+                                return timesAcc;
+                            }, {});
+    
+                            item.times.forEach(timeSlot => {
+                                if (timeSlot.booked === false) {
+                                    acc[item.date][timeSlot.time] = 'Available';
+                                }
+                            });
+                        }
                         return acc;
                     }, {});
-
+    
                     setScheduleData(prev => ({
                         ...prev,
                         dates,
@@ -61,29 +66,35 @@ const ScheduleScreen = () => {
                 setLoading(false);
             }
         };
-
+    
         fetchSchedule();
     }, [courseId, teacherId]);
+    
     
     
       
 
     const handleSlotClick = async (date, time) => {
-        // Get the current slot status
-        const slotStatus = scheduleData.bookings[date][time];
-    
-        // If the slot is already booked, don't allow it to be changed
-        if (slotStatus === 'Booked') {
-            return;
+        // Prevent changing the status if the slot is already booked
+        if (scheduleData.bookings[date][time] === 'Booked') {
+            console.log('This slot is already booked and cannot be changed.');
+            return; // Exit the function early
         }
     
-        // Proceed with toggling the status
-        const isBooked = slotStatus === 'Booked';
+        // Otherwise, toggle the slot status
+        const isBooked = scheduleData.bookings[date][time] === 'Available';
+    
+        // Construct the body of your request based on how your API expects it
+        const requestBody = {
+            date,
+            time,
+            isBooked: isBooked, // The status we want to set
+        };
     
         // Update the local state to reflect the change immediately
         setScheduleData(prevState => {
             const updatedBookings = { ...prevState.bookings };
-            updatedBookings[date][time] = isBooked ? 'Available' : 'Booked';
+            updatedBookings[date][time] = isBooked ? 'Booked' : 'Available';
             return { ...prevState, bookings: updatedBookings };
         });
     
@@ -94,9 +105,6 @@ const ScheduleScreen = () => {
                 const config = {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 };
-                const requestBody = {
-                    date, time, isBooked: !isBooked,
-                };
                 await axios.put(`/api/schedule/update`, requestBody, config);
             }
         } catch (error) {
@@ -104,11 +112,12 @@ const ScheduleScreen = () => {
             // Rollback state update if there's an error
             setScheduleData(prevState => {
                 const updatedBookings = { ...prevState.bookings };
-                updatedBookings[date][time] = isBooked ? 'Booked' : 'Available';
+                updatedBookings[date][time] = isBooked ? 'Available' : 'Booked';
                 return { ...prevState, bookings: updatedBookings };
             });
         }
     };
+    
     
     
     
