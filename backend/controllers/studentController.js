@@ -15,7 +15,7 @@ const getAllStudents = asyncHandler(async(req, res) =>{
 // @route GET /api/student/:id
 // @access Public
 const getStudentById = asyncHandler(async(req, res) =>{
-    const studentId = await Student.findById(req.params.id)
+    const studentId = await Student.findById(req.params.id).populate('user','name email role')
     if (studentId){
         res.json(studentId)
     }else{
@@ -29,7 +29,10 @@ const getStudentById = asyncHandler(async(req, res) =>{
 // @access Public
 const registerStudent = asyncHandler(async (req, res) => {
     const { name, email, password, studentId, studentDepartment, phone } = req.body;
-    
+    if(!name || !email || !password ||  !studentId || !studentDepartment || !phone ) {
+        res.status(400);
+        throw new Error('Incomplete data');
+    }
     // Create or find the User first
     let user = await User.findOne({ email });
     if (!user) {

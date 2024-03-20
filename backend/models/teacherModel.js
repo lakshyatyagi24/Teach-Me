@@ -4,7 +4,6 @@ const teacherSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: [true],
     },
     teacherId:{
         type : String,
@@ -15,26 +14,12 @@ const teacherSchema = mongoose.Schema({
         type : String,
         required: true
     },
-    course:{
-        type : String,
-        required: true
-    },
-    price:{
-        type : String,
-        required: true
-    },
-    grade:{
-        type : String,
-        required: true
-    },
     phone:{
         type : String,
         required: true
     },
-    image: {
-        type: String,
-        required: true,
-        default: '/images/ilan.jpg'
+    picture:{
+        type : String,
     }
 }, {
     timestamps : true

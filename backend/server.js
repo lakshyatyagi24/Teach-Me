@@ -1,60 +1,65 @@
-import path from 'path'
+import path from "path";
 import express from "express";
 import dotenv from "dotenv";
 import colors from "colors";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-import morgan from 'morgan'
+import morgan from "morgan";
 import connectDB from "./config/db.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
-import uploadRoutes from './routes/uploadRoutes.js';
-import scheduleRoutes from './routes/scheduleRoutes.js';
-import bodyParser from 'body-parser';
+import teacherCourseRoutes from "./routes/teacherCourseRoutes.js";
+import enrollCourseRoutes from "./routes/enrollCourseRoutes.js";
+import reviewCourseRoutes from "./routes/reviewCourseRoutes.js";
+import facultyRoutes from "./routes/facultyRoutes.js";
+import cors from "cors";
+import * as url from "url";
+import { contactUs } from "./controllers/enrollCourseController.js";
+
+const basePath = url.fileURLToPath(import.meta.url);
 
 dotenv.config();
 
 connectDB();
 
 const app = express();
-
+// Express middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors({ origin: `*` }));
 
-if(process.env.NODE_ENV === 'development'){
-  app.use(morgan('dev'))
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
 /*app.get("/", (req, res) => {
   res.send("API is running........");
 });*/
 
-app.use(bodyParser.json());
+app.use("/api/courses", courseRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/students", studentRoutes);
+app.use("/api/teachers", teacherRoutes);
+app.use("/api/teacher-Course", teacherCourseRoutes);
+app.use("/api/enroll-Course", enrollCourseRoutes);
+app.use("/api/review-Course", reviewCourseRoutes);
+app.use("/api/faculty", facultyRoutes);
+app.post("/api/contact", contactUs );
 
-app.use('/api/courses', courseRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/students', studentRoutes);
-app.use('/api/teachers', teacherRoutes);
-app.use('/api/upload', uploadRoutes);
-app.use('/api/schedule', scheduleRoutes);
+const __dirname = path.resolve();
+app.use("/uploads", express.static(path.join(basePath, "../", "/uploads"))); //making the uploads folder static
 
-
-const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname,'/uploads'))) //making the uploads folder static
-
-
-if(process.env.NODE_ENV === 'production'){
-  app.use(express.static(path.join(__dirname, '/frontend/build')))
-
-  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')))
-
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+  );
 } else {
   app.get("/", (req, res) => {
     res.send("API is running........");
   });
 }
-
-  
 
 app.use(notFound);
 app.use(errorHandler);

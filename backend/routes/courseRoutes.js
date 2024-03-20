@@ -1,12 +1,23 @@
-import express from 'express'
-const router = express.Router()
-import { getCourse, getCourseById ,createCourseReview ,updateCourse , createCourse ,deleteCourse  , getCoursesForTeacher} from '../controllers/courseController.js'
-import { protect , admin } from '../middleware/authMiddleware.js'
+import express from "express";
+const router = express.Router();
+import {
+  getCourse,
+  getCourseById,
+  createCourseReview,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+} from "../controllers/courseController.js";
+import { protect /*admin*/ } from "../middleware/authMiddleware.js";
+import upload from "../utils/uploadHelper.js";
 
-router.route('/').get(getCourse).post(protect ,admin, createCourse)
-router.route('/:id/reviews').post(protect , createCourseReview)
-router.route('/:id').get(getCourseById).put(protect , admin, updateCourse).delete(protect , admin, deleteCourse)
-router.route('/teacher/courses').get(protect, getCoursesForTeacher)
+router
+  .route("/")
+  .get(getCourse)
+  .post(protect, upload.single("image"), createCourse);
+router.route("/:id/reviews").post(protect, createCourseReview);
+router.route("/:id").get(getCourseById);
+router.route("/:id").post(protect, upload.single("image"), updateCourse);
+router.route("/:id").delete(protect, deleteCourse);
 
-
-export default router
+export default router;

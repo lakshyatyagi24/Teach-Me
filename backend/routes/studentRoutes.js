@@ -5,6 +5,6 @@ import { getAllStudents , getStudentById, registerStudent} from '../controllers/
 
 router.route('/').get(getAllStudents)
 router.route('/:id').get(getStudentById)
-router.route('/').post(registerStudent)
+router.route('/').post(registerStudent) // not using
 
 export default router
