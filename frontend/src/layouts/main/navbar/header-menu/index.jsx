@@ -17,11 +17,11 @@ const HeaderMenu = () => {
           onChange={(event) => dispatch(setSearchText(event.target.value))}
         />
       )}
-      {user?.role !== "admin" && <LinkButton title="Home" link="/" />}
+      {user?.role !== "admin" && <LinkButton title={<strong>Home</strong>} link="/" />}
       {/* <LinkButton title="About" link="/about" />
       <LinkButton title="Contact" link="/contact" /> */}
       {user?.role === "teacher" && (
-        <LinkButton title="Courses" link="/courses" />
+        <LinkButton title={<strong>Courses</strong>} link="/courses" />
       )}
       {user?.role === "admin" && <LinkButton title="Users" link="/" />}
       {user?.role === "admin" && <LinkButton title="Courses" link="/courses" />}

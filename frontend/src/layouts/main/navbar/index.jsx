@@ -22,7 +22,7 @@ const Navbar = () => {
             <NavLink to={"/"}>
               <img src={Logo} alt="faact" />
             </NavLink>
-            <a href="/">Teach-Me</a>
+            <a href="/"><strong>Teach-Me</strong></a>
           </LogoWrapper>
           {!!globalLoader && <Loader />}
         </BrandWrapper>
