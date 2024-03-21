@@ -20,6 +20,10 @@ import { toast } from "react-toastify";
 
 const initialSlot = [
   {
+    day: "Sunday",
+    timeSlots: [],
+  },
+  {
     day: "Monday",
     timeSlots: [],
   },
@@ -41,10 +45,6 @@ const initialSlot = [
   },
   {
     day: "Saturday",
-    timeSlots: [],
-  },
-  {
-    day: "Sunday",
     timeSlots: [],
   },
 ];
@@ -71,10 +71,6 @@ const dataSlot = [
   },
   {
     day: "Saturday",
-    timeSlots: [],
-  },
-  {
-    day: "Sunday",
     timeSlots: [],
   },
 ];
@@ -494,7 +490,87 @@ const createCourse = ({ isUpdate = false }) => {
               <Flex vertical gap={15}>
                 {data?.slots.length > 0 &&
                   data.slots.map((item, index) => {
-                    if (index === 0) {
+                    if(index===0){
+                      return (
+                        <Flex align={"center"} gap={15}>
+                          <p style={{ marginBottom: 0, width: "100px" }}>
+                            {item.day}
+                          </p>
+                          <Flex vertical gap={10}>
+                            <Flex gap={10}>
+                              <TimePicker
+                                floatLabel
+                                label="start Time"
+                                isBorder
+                                value={
+                                  sundaySlot?.startTime !== "" &&
+                                  ConvertToLocalDate(sundaySlot?.startTime)
+                                }
+                                onChange={(value) =>
+                                  handleChange(value, "startTime", item.day)
+                                }
+                              />
+                              <TimePicker
+                                floatLabel
+                                label="end Time"
+                                isBorder
+                                value={
+                                  sundaySlot?.endTime !== "" &&
+                                  ConvertToLocalDate(sundaySlot?.endTime)
+                                }
+                                onChange={(value) =>
+                                  handleChange(value, "endTime", item.day)
+                                }
+                              />
+                              <PlusCircleOutlined
+                                style={{ color: "blue", cursor: "pointer" }}
+                                onClick={() => {
+                                  AddSlot(item.day);
+                                }}
+                              />
+                            </Flex>
+                            {/* map */}
+                            <>
+                              {item?.timeSlots.length > 0 &&
+                                item?.timeSlots?.map((time, timeIndex) => (
+                                  <Flex gap={10}>
+                                    <TimePicker
+                                      floatLabel
+                                      label="start Time"
+                                      isBorder
+                                      value={
+                                        time?.startTime !== "" &&
+                                        ConvertToLocalDate(time?.startTime)
+                                      }
+                                      disabled
+                                    />
+                                    <TimePicker
+                                      floatLabel
+                                      label="end Time"
+                                      isBorder
+                                      disabled
+                                      value={
+                                        time?.endTime !== "" &&
+                                        ConvertToLocalDate(time?.endTime)
+                                      }
+                                    />
+                                    <MinusCircleOutlined
+                                      style={{
+                                        color: "red",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() => {
+                                        RemoveSlot(item.day, timeIndex);
+                                      }}
+                                    />
+                                  </Flex>
+                                ))}
+                            </>
+                          </Flex>
+                        </Flex>
+                      );
+                    }
+                    else if (index === 1) {
                       return (
                         <Flex align={"center"} gap={15}>
                           <p style={{ marginBottom: 0, width: "100px" }}>
@@ -573,7 +649,7 @@ const createCourse = ({ isUpdate = false }) => {
                           </Flex>
                         </Flex>
                       );
-                    } else if (index === 1) {
+                    } else if (index === 2) {
                       return (
                         <Flex align={"center"} gap={15}>
                           <p style={{ marginBottom: 0, width: "100px" }}>
@@ -652,7 +728,7 @@ const createCourse = ({ isUpdate = false }) => {
                           </Flex>
                         </Flex>
                       );
-                    } else if (index === 2) {
+                    } else if (index === 3) {
                       return (
                         <Flex align={"center"} gap={15}>
                           <p style={{ marginBottom: 0, width: "100px" }}>
@@ -731,7 +807,7 @@ const createCourse = ({ isUpdate = false }) => {
                           </Flex>
                         </Flex>
                       );
-                    } else if (index === 3) {
+                    } else if (index === 4) {
                       return (
                         <Flex align={"center"} gap={15}>
                           <p style={{ marginBottom: 0, width: "100px" }}>
@@ -810,7 +886,7 @@ const createCourse = ({ isUpdate = false }) => {
                           </Flex>
                         </Flex>
                       );
-                    } else if (index === 4) {
+                    } else if (index === 5) {
                       return (
                         <Flex align={"center"} gap={15}>
                           <p style={{ marginBottom: 0, width: "100px" }}>
@@ -837,85 +913,6 @@ const createCourse = ({ isUpdate = false }) => {
                                 value={
                                   fridaySlot?.endTime !== "" &&
                                   ConvertToLocalDate(fridaySlot?.endTime)
-                                }
-                                onChange={(value) =>
-                                  handleChange(value, "endTime", item.day)
-                                }
-                              />
-                              <PlusCircleOutlined
-                                style={{ color: "blue", cursor: "pointer" }}
-                                onClick={() => {
-                                  AddSlot(item.day);
-                                }}
-                              />
-                            </Flex>
-                            {/* map */}
-                            <>
-                              {item?.timeSlots.length > 0 &&
-                                item?.timeSlots?.map((time, timeIndex) => (
-                                  <Flex gap={10}>
-                                    <TimePicker
-                                      floatLabel
-                                      label="start Time"
-                                      isBorder
-                                      value={
-                                        time?.startTime !== "" &&
-                                        ConvertToLocalDate(time?.startTime)
-                                      }
-                                      disabled
-                                    />
-                                    <TimePicker
-                                      floatLabel
-                                      label="end Time"
-                                      isBorder
-                                      disabled
-                                      value={
-                                        time?.endTime !== "" &&
-                                        ConvertToLocalDate(time?.endTime)
-                                      }
-                                    />
-                                    <MinusCircleOutlined
-                                      style={{
-                                        color: "red",
-                                        cursor: "pointer",
-                                      }}
-                                      onClick={() => {
-                                        RemoveSlot(item.day, timeIndex);
-                                      }}
-                                    />
-                                  </Flex>
-                                ))}
-                            </>
-                          </Flex>
-                        </Flex>
-                      );
-                    } else if (index === 5) {
-                      return (
-                        <Flex align={"center"} gap={15}>
-                          <p style={{ marginBottom: 0, width: "100px" }}>
-                            {item.day}
-                          </p>
-                          <Flex vertical gap={10}>
-                            <Flex gap={10}>
-                              <TimePicker
-                                floatLabel
-                                label="start Time"
-                                isBorder
-                                value={
-                                  saturdaySlot?.startTime !== "" &&
-                                  ConvertToLocalDate(saturdaySlot?.startTime)
-                                }
-                                onChange={(value) =>
-                                  handleChange(value, "startTime", item.day)
-                                }
-                              />
-                              <TimePicker
-                                floatLabel
-                                label="end Time"
-                                isBorder
-                                value={
-                                  saturdaySlot?.endTime !== "" &&
-                                  ConvertToLocalDate(saturdaySlot?.endTime)
                                 }
                                 onChange={(value) =>
                                   handleChange(value, "endTime", item.day)
@@ -1047,7 +1044,7 @@ const createCourse = ({ isUpdate = false }) => {
                           </Flex>
                         </Flex>
                       );
-                    }
+                    } 
                   })}
               </Flex>
               <Button

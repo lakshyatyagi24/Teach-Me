@@ -5,20 +5,24 @@ import mongoose from "mongoose";
 import EnrolledStudent from "../models/enrolledStudentModel.js";
 
 const createTeacherCourse = asyncHandler(async (req, res) => {
+
   if (req?.user?.role !== "teacher") {
     res.status(400);
     throw new Error("This is only for teacher");
   }
 
   const { courseId, price, grade, slots } = req.body;
+
   if (grade && grade < 85) {
     res.status(400);
     throw new Error("Your grade must be grater");
   }
+
   if (price && price > 25) {
     res.status(400);
     throw new Error("Price must be less than 25");
   }
+
   const existCourse = await Course.findById(courseId || "");
   if (!existCourse || !courseId) {
     res.status(400);
@@ -34,6 +38,7 @@ const createTeacherCourse = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("course already created");
   }
+
   // Create a new TeacherCourses instance
   const newTeacherCourse = new TeacherCourses({
     courseId: existCourse._id,
@@ -68,11 +73,11 @@ const updateTeacherCourse = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("CourseId is invalid");
   }
-  console.log({
+  /*console.log({
     existTeacherCourse,
     price,
     slots,
-  });
+  });*/
   // Create a new TeacherCourses instance
   existTeacherCourse.price = price;
   existTeacherCourse.slots = slots;
@@ -111,7 +116,7 @@ const updateCourseTeachingStatus = asyncHandler(async (req, res) => {
 });
 
 const getTeacherAllCourses = asyncHandler(async (req, res) => {
-  console.log(req?.user);
+  //console.log(req?.user);
 
   if (req?.user?.role !== "teacher") {
     res.status(400);
@@ -267,7 +272,7 @@ const getAllTeacherofCourse = asyncHandler(async (req, res) => {
   const allCourses = await TeacherCourses.find({
     courseId,
     isTeaching: true,
-  }).populate("teacherId", "name email");
+  }).populate("teacherId", "name email picture");
   res.status(200).json(allCourses);
 });
 

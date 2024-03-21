@@ -24,7 +24,7 @@ const getAllFaculty = asyncHandler(async (req, res) => {
   res.json(facultyObject);
 });
 const addFaculty = asyncHandler(async (req, res) => {
-  console.log("addFaculty");
+  //console.log("addFaculty");
   if (req.user.role !== "admin") {
     res.status(400);
     throw new Error("You are not allowed");

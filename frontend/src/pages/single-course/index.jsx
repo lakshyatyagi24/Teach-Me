@@ -15,7 +15,7 @@ import { setGlobalLoader } from "../../store/slices/globalLoader";
 import { useState } from "react";
 import axios from "axios";
 
-const column = ["Name", "Email", "Price"];
+const column = ["Pic", "Name", "Email", "Price"];
 
 const SingleCourse = () => {
   const { token } = useSelector((state) => state.auth);
@@ -87,9 +87,15 @@ const SingleCourse = () => {
                       teachers?.map((item, index) => (
                         <tr
                           key={index}
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: "pointer", verticalAlign: "middle" }}
                           onClick={() => clickHandler(item?._id)}
                         >
+                        <td className="p-1">
+                            <img
+                              height={70}
+                              src={`http://localhost:5000${item?.teacherId?.picture}`}
+                            />
+                        </td>
                           <td className="p-3">{item?.teacherId?.name}</td>
                           <td className="p-3">{item?.teacherId?.email}</td>
                           <td className="p-3">{item?.price}</td>

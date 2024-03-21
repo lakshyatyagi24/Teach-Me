@@ -105,12 +105,12 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (req?.body?.email && req?.body?.email !== user.email) {
       // Check if the new email is already in use by another user
       const existingUser = await User.findOne({ email: req.body.email });
-      console.log("existingUser : ", existingUser);
+      //console.log("existingUser : ", existingUser);
 
-      console.log(
+      /*console.log(
         existingUser &&
           existingUser._id.toString() !== userIdToUpdate.toString()
-      );
+      );*/
       if (
         existingUser &&
         existingUser._id.toString() !== userIdToUpdate.toString()
@@ -252,6 +252,7 @@ const registerTeacher = asyncHandler(async (req, res) => {
   }
 
   const user = await User.create({
+    picture: fileNameAfterUploads,
     name: name,
     email: email,
     password: password,

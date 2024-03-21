@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import EnrolledStudent from "../models/enrolledStudentModel.js";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import User from "../models/userModel.js";
+import Course from "../models/courseModel.js";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
@@ -22,13 +24,13 @@ const EmailSender = async (to, subject, text) => {
     subject,
     text,
   };
-  console.log( "to : " , to , "subject : " , subject , "text : " , text )
+
   const info = await transporter.sendMail(mailOptions);
-  console.log("info", info);
+  //console.log("info", info);
 };
 
 const enrollCourse = asyncHandler(async (req, res) => {
-  console.log("enroll course :");
+  //console.log("enroll course :");
 
   const { teacherCourseId, slotId } = req.body;
   const slotMongoID = new mongoose.Types.ObjectId(slotId);
@@ -63,8 +65,10 @@ const enrollCourse = asyncHandler(async (req, res) => {
 
   const studentEmail = req.user.email;
   const studentName = req.user.name;
+  console.log("studentName" , studentName)
   const teacherEmail = isteacherCourseIdExist.teacherId.email;
   const teacherName = isteacherCourseIdExist.teacherId.name;
+  console.log("teacherName" , teacherName)
   const courseName = isteacherCourseIdExist.courseId.name;
   const studentMessage = `Hello ${studentName},\nYou got enrolled in Course - ${courseName} with Teacher ${teacherName}.\n Your class is scheduled on ${slot.day} at ${slot.startTime} to ${slot.endTime}.\n Thank you for enrolling in our course. \n Regards, \n TeachMe Team`;
   const teacherMessage = `Hello ${teacherName},\nYou got enrolled in Course - ${courseName}, with Student ${studentName}.\nYour class is scheduled on ${slot.day} at ${slot.startTime} to ${slot.endTime}.\n Thank you for enrolling in our course. \n Regards, \n TeachMe Team`;
@@ -84,6 +88,7 @@ const enrollCourse = asyncHandler(async (req, res) => {
     teacherId: isteacherCourseIdExist.teacherId,
     courseId: isteacherCourseIdExist.courseId,
     slot_id: slotMongoID,
+    isActive: true
   });
   const updation = await enrollcourse.save();
   await EmailSender(
@@ -146,8 +151,10 @@ const getTeacherUpcomingLesson = asyncHandler(async (req, res) => {
       model: "Course",
     },
   });
+  //console.log(enrollcourse,"enrollCourse")
   if (enrollcourse?.length) {
     const result = {};
+
     // Loop through each entry in the inputData
     enrollcourse.forEach((entry) => {
       const day = entry.slot.day;
@@ -187,7 +194,7 @@ const updateStatusofEnrollCourse = asyncHandler(async (req, res) => {
 
   let emails = " ";
   enrolledStudent.map((item, indx) => {
-    console.log(item?.enrolledUserId);
+    //console.log(item?.enrolledUserId);
     emails += `${item?.enrolledUserId?.email} ${
       indx < enrolledStudent.length - 1 ? ", " : ""
     }`;
@@ -209,8 +216,17 @@ const updateStatusofEnrollCourse = asyncHandler(async (req, res) => {
 });
 
 const StudenClassCancel = asyncHandler(async (req, res) => {
-  console.log("in StudenClassCancel");
+  //console.log("in StudenClassCancel");
   const { teacherCourseId, slot_id } = req.body;
+  const studentName = req.user.name;
+  console.log("object" , studentName)
+  console.log("teacherCourseId" , teacherCourseId)
+  const teacherCourses = await TeacherCourses.findById(teacherCourseId);
+  const user = await User.findById(teacherCourses.teacherId);
+  const teacherName= user.name;
+  const courses = await Course.findById(teacherCourses.courseId);
+  const courseName = courses.name;
+  console.log("courseName" , courseName)
   const enrolledStudent = await EnrolledStudent.find({
     teacherCourseId,
     slot_id,
@@ -218,15 +234,22 @@ const StudenClassCancel = asyncHandler(async (req, res) => {
   })
     .populate("teacherId", "email")
     .populate("enrolledUserId", "name email");
-  console.log(enrolledStudent, "enrolledStudent");
+  //console.log(enrolledStudent, "enrolledStudent");
   if (!enrolledStudent.length) {
     res.status(400);
     throw new Error("course not found");
   }
+  const updateStatus = await EnrolledStudent.updateOne({
+    teacherCourseId,
+    slot_id,
+    enrolledUserId: req.user._id,
+  }, { $set: { isActive: false } });
+
+  //const courseName = enrolledStudent?.[0]?.courseId?.name;
   await EmailSender(
     enrolledStudent?.[0]?.teacherId?.email,
     "Class cancellation",
-    `Hello ${studentName},\nIn Course - ${courseName} has cancel by ${enrolledStudent?.[0]?.enrolledUserId?.name} cannot be there in the ${enrolledStudent?.[0]?.slot?.day} class`
+    `Hello ${teacherName},\nIn Course -  ${courseName} has cancel by ${enrolledStudent?.[0]?.enrolledUserId?.name} cannot be there in the ${enrolledStudent?.[0]?.slot?.day}`
   );
 
   return res.json({ message: "Notificaton Email sended to the teacher" });

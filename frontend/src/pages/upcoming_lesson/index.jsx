@@ -10,6 +10,7 @@ import { ConvertToLocal } from "../../helpers/time";
 import { EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const weekDays = {
   1: "Monday",
   2: "Tuesday",
@@ -20,6 +21,7 @@ const weekDays = {
   0: "Sunday",
 };
 const UpcomingLesson = ({ isTeacher = false }) => {
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const { token } = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
@@ -110,6 +112,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
                 setLessonTime("");
                 toast.success("Class Cancel Successfully!");
                 setOpen(false);
+                navigate('/')
               })
               .catch((err) => {
                 toast.error(err?.response?.data?.message);

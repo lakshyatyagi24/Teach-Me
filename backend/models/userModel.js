@@ -19,7 +19,10 @@ const userSchema = mongoose.Schema({
         type : String,
         required: true,
         default: 'student'
-    }
+    },
+    picture: {
+        type: String,
+    },
 }, {
     timestamps : true
 })

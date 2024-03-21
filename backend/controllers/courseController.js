@@ -136,7 +136,7 @@ const createCourse = asyncHandler(async (req, res) => {
     } else {
       parts = filePath.split("\\uploads\\");
     }
-    console.log(parts, "parts");
+    //console.log(parts, "parts");
     fileNameAfterUploads = parts.length > 1 ? "/uploads/" + parts[1] : null;
   }
 
@@ -156,7 +156,7 @@ const deleteCourse = asyncHandler(async (req, res) => {
   }
   const courseId = req.params.id;
   const courseToDelete = await Course.findById(courseId);
-  console.log({courseToDelete})
+  //console.log({courseToDelete})
   if (!courseToDelete) {
     return res.status(404).json({ message: "Course not found" });
   }
