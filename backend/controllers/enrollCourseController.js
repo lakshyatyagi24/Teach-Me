@@ -252,8 +252,8 @@ const StudenClassCancel = asyncHandler(async (req, res) => {
   console.log("studentName" , studentName)
   console.log("teacherCourseId" , teacherCourseId)
   const teacherCourses = await TeacherCourses.findById(teacherCourseId);
-  const user = await User.findById(teacherCourses.teacherId);
-  const teacherName= user.name;
+  const users = await User.findById(teacherCourses.teacherId);
+  const teacherName= users.name;
   const courses = await Course.findById(teacherCourses.courseId);
   const courseName = courses.name;
   console.log("courseName" , courseName)
@@ -279,7 +279,20 @@ const StudenClassCancel = asyncHandler(async (req, res) => {
   await EmailSender(
     enrolledStudent?.[0]?.teacherId?.email,
     "Class cancellation",
-    `Hello ${teacherName},\nIn Course -  ${courseName} has cancel by ${enrolledStudent?.[0]?.enrolledUserId?.name} cannot be there in the ${enrolledStudent?.[0]?.slot?.day} ${formatTime(enrolledStudent?.[0]?.slot?.startTime)} to ${formatTime(enrolledStudent?.[0]?.slot?.endTime)}.\n Regards, \n TeachMe Team`
+    `Hello ${teacherName},\n
+    The lesson in Course -  ${courseName} was canceled by ${enrolledStudent?.[0]?.enrolledUserId?.name} on the ${enrolledStudent?.[0]?.slot?.day} and ${formatTime(enrolledStudent?.[0]?.slot?.startTime)} to ${formatTime(enrolledStudent?.[0]?.slot?.endTime)}.\n
+    Regards,\n
+    TeachMe Team`
+  );
+
+  await EmailSender(
+    req.user.email,
+    "Class cancellation",
+    `Hello ${studentName},\n
+    The Course -  ${courseName} you were enrolled to him canceled by you.\n
+    we would love to see you with us in the future.\n
+    Regards,\n
+    TeachMe Team`
   );
 
   return res.json({ message: "Notificaton Email sended to the teacher" });
