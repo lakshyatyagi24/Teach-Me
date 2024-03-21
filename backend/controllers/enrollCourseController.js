@@ -29,6 +29,11 @@ const EmailSender = async (to, subject, text) => {
   //console.log("info", info);
 };
 
+function formatTime(timeString) {
+  // Simply remove the milliseconds and 'Z' from the string
+  return timeString.substring(0, timeString.length - 8);
+}
+
 // @desc    Enroll course
 // @route   POST /api/enrollCourse
 // @access  Private
@@ -73,8 +78,18 @@ const enrollCourse = asyncHandler(async (req, res) => {
   const teacherName = isteacherCourseIdExist.teacherId.name;
   console.log("teacherName" , teacherName)
   const courseName = isteacherCourseIdExist.courseId.name;
-  const studentMessage = `Hello ${studentName},\nYou got enrolled in Course - ${courseName} with Teacher ${teacherName}.\n Your class is scheduled on ${slot.day} at ${slot.startTime} to ${slot.endTime}.\n Thank you for enrolling in our course. \n Regards, \n TeachMe Team`;
-  const teacherMessage = `Hello ${teacherName},\nYou got enrolled in Course - ${courseName}, with Student ${studentName}.\nYour class is scheduled on ${slot.day} at ${slot.startTime} to ${slot.endTime}.\n Thank you for enrolling in our course. \n Regards, \n TeachMe Team`;
+  const studentMessage = `Hello ${studentName},\n
+  You got enrolled in Course - ${courseName} with Teacher ${teacherName}.\n
+  Your class is scheduled on ${slot.day} at ${formatTime(slot.startTime)} to ${formatTime(slot.endTime)}.\n
+  Thank you for enrolling in our course.\n
+  Regards,\n
+  TeachMe Team`;
+  const teacherMessage = `Hello ${teacherName},\n
+  You got enrolled in Course - ${courseName}, with Student ${studentName}.\n
+  Your class is scheduled on ${slot.day} at ${formatTime(slot.startTime)} to ${formatTime(slot.endTime)}.\n
+  Thank you for enrolling in our course.\n
+  Regards,\n
+  TeachMe Team`;
 
   const isStudentEnrolled = await EnrolledStudent.findOne({
     enrolledUserId: req.user._id,
@@ -264,7 +279,7 @@ const StudenClassCancel = asyncHandler(async (req, res) => {
   await EmailSender(
     enrolledStudent?.[0]?.teacherId?.email,
     "Class cancellation",
-    `Hello ${teacherName},\nIn Course -  ${courseName} has cancel by ${enrolledStudent?.[0]?.enrolledUserId?.name} cannot be there in the ${enrolledStudent?.[0]?.slot?.day}`
+    `Hello ${teacherName},\nIn Course -  ${courseName} has cancel by ${enrolledStudent?.[0]?.enrolledUserId?.name} cannot be there in the ${enrolledStudent?.[0]?.slot?.day} ${formatTime(enrolledStudent?.[0]?.slot?.startTime)} to ${formatTime(enrolledStudent?.[0]?.slot?.endTime)}.\n Regards, \n TeachMe Team`
   );
 
   return res.json({ message: "Notificaton Email sended to the teacher" });
