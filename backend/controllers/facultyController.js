@@ -1,6 +1,9 @@
 import asyncHandler from "express-async-handler";
 import Faculty from "../models/facultyModel.js";
 
+// @desc    Get all Faculty
+// @route   GET /api/faculty/admin
+// @access  Private
 const getAllFacultyAdmin = asyncHandler(async (req, res) => {
   if (req.user.role !== "admin") {
     res.status(400);
@@ -9,6 +12,10 @@ const getAllFacultyAdmin = asyncHandler(async (req, res) => {
   const allFaculty = await Faculty.find({});
   res.json(allFaculty);
 });
+
+// @desc    Get all Faculty
+// @route   GET /api/faculty
+// @access  Public
 const getAllFaculty = asyncHandler(async (req, res) => {
   const allFaculty = await Faculty.find({});
   const facultyObject = allFaculty.reduce((acc, facultyMember) => {
@@ -23,6 +30,10 @@ const getAllFaculty = asyncHandler(async (req, res) => {
   }, {});
   res.json(facultyObject);
 });
+
+// @desc    Add Faculty
+// @route   POST /api/faculty/addFaculty
+// @access  Private
 const addFaculty = asyncHandler(async (req, res) => {
   //console.log("addFaculty");
   if (req.user.role !== "admin") {
@@ -37,6 +48,10 @@ const addFaculty = asyncHandler(async (req, res) => {
   const faculty = await Faculty.create({ name, role });
   return res.json(faculty);
 });
+
+// @desc    Delete Faculty
+// @route   DELETE /api/faculty/:id
+// @access  Private
 const deleteFaculty = asyncHandler(async (req, res) => {
   if (req.user.role !== "admin") {
     res.status(400);

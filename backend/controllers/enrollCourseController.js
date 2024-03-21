@@ -29,6 +29,9 @@ const EmailSender = async (to, subject, text) => {
   //console.log("info", info);
 };
 
+// @desc    Enroll course
+// @route   POST /api/enrollCourse
+// @access  Private
 const enrollCourse = asyncHandler(async (req, res) => {
   //console.log("enroll course :");
 
@@ -104,6 +107,9 @@ const enrollCourse = asyncHandler(async (req, res) => {
   res.status(201).json(updation);
 });
 
+// @desc    Get active enrolled course
+// @route   GET /api/enrollCourse/getActiveEnrollCourse
+// @access  Private
 const getActiveEnrollCourse = asyncHandler(async (req, res) => {
   const enrollcourse = await EnrolledStudent.find({
     enrolledUserId: req.user._id,
@@ -139,6 +145,9 @@ const getActiveEnrollCourse = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get teacher upcoming lesson
+// @route   GET /api/enrollCourse/getTeacherUpcomingLesson
+// @access  Private
 const getTeacherUpcomingLesson = asyncHandler(async (req, res) => {
   const enrollcourse = await EnrolledStudent.find({
     teacherId: req.user._id,
@@ -176,6 +185,9 @@ const getTeacherUpcomingLesson = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Update status of enrolled course
+// @route   POST /api/enrollCourse/updateStatusofEnrollCourse
+// @access  Private
 const updateStatusofEnrollCourse = asyncHandler(async (req, res) => {
   const { teacherCourseId, slot_id } = req.body;
   const teacherId = req.user._id;
@@ -215,11 +227,14 @@ const updateStatusofEnrollCourse = asyncHandler(async (req, res) => {
   return res.json({ message: "Enrolled courses updated successfully" });
 });
 
+// @desc    Student class cancel
+// @route   POST /api/enrollCourse/studentClassCancel
+// @access  Private
 const StudenClassCancel = asyncHandler(async (req, res) => {
   //console.log("in StudenClassCancel");
   const { teacherCourseId, slot_id } = req.body;
   const studentName = req.user.name;
-  console.log("object" , studentName)
+  console.log("studentName" , studentName)
   console.log("teacherCourseId" , teacherCourseId)
   const teacherCourses = await TeacherCourses.findById(teacherCourseId);
   const user = await User.findById(teacherCourses.teacherId);
@@ -254,6 +269,10 @@ const StudenClassCancel = asyncHandler(async (req, res) => {
 
   return res.json({ message: "Notificaton Email sended to the teacher" });
 });
+
+// @desc    Contact us
+// @route   POST /api/enrollCourse/contactUs
+// @access  Public
 const contactUs = asyncHandler(async (req, res) => {
   const { email, name, description } = req.body;
   if (!email || !name || !description) {

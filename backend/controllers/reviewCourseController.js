@@ -3,6 +3,9 @@ import TeacherCourses from "../models/teacherCoursesModel.js";
 import Review from "../models/reviewModel.js";
 import EnrolledStudent from "../models/enrolledStudentModel.js";
 
+// @desc    Add review to course
+// @route   POST /api/review/addReviewToCourse
+// @access  Private
 const addReviewToCourse = asyncHandler(async (req, res) => {
   const reviewerId = req.user._id;
   const { teacherCourseId, rating, comment } = req.body;
@@ -46,6 +49,9 @@ const addReviewToCourse = asyncHandler(async (req, res) => {
   res.status(201).json(review);
 });
 
+// @desc    Get review of course
+// @route   GET /api/review/getCourseReview/:id
+// @access  Private
 const getCourseReview = asyncHandler(async (req, res) => {
   const review = await Review.find({
     teacherCourseId : req.params.id,
