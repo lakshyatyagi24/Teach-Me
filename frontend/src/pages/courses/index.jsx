@@ -21,7 +21,7 @@ const Courses = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: REACT_APP_BACKEND_URL+"/api/courses",
+      url: "${process.env.REACT_APP_API_BASE_URL}/api/courses",
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -42,7 +42,7 @@ const Courses = () => {
   const deleteHandler = (item) => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: REACT_APP_BACKEND_URL+`/api/courses/${item._id}`,
+      url: `${process.env.REACT_APP_API_BASE_URL}/api/courses/${item._id}`,
       method: "DELETE",
       headers: {
         authorization: `Bearer ${token}`,
@@ -75,7 +75,7 @@ const Courses = () => {
             courses.map((item, index) => (
               <tr key={index}>
                 <td className="p-3">
-                  <Image src={REACT_APP_BACKEND_URL+`${item?.image}`} />
+                  <Image src={`${process.env.REACT_APP_API_BASE_URL}${item?.image}`} />
                 </td>
                 <td className="p-3">{item.name}</td>
                 <td className="p-3">{item.faculty}</td>

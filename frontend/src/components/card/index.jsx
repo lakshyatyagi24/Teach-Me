@@ -25,7 +25,7 @@ const Card = ({ item, isTeacher = false, isUpdate = false, _id }) => {
       }}
     >
       <Wrapper>
-        <CardImage src={REACT_APP_BACKEND_URL+`${item?.image}`} alt="img" />
+        <CardImage src={`${process.env.REACT_APP_API_BASE_URL}${item?.image}`} alt="img" />
         <h2>{item?.name}</h2>
         <Description>{item?.description}</Description>
         <Price>

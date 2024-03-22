@@ -45,7 +45,7 @@ const Faculty = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: REACT_APP_BACKEND_URL+"/api/teachers",
+      url: "${process.env.REACT_APP_API_BASE_URL}/api/teachers",
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ const Faculty = () => {
     if (!open) {
       dispatch(setGlobalLoader(true));
       axios({
-        url: REACT_APP_BACKEND_URL+"/api/faculty/admin",
+        url: "${process.env.REACT_APP_API_BASE_URL}/api/faculty/admin",
         method: "GET",
         headers: {
           authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ const Faculty = () => {
   const deleteHandler = (item) => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: REACT_APP_BACKEND_URL+`/api/faculty/${item._id}`,
+      url: `${process.env.REACT_APP_API_BASE_URL}/api/faculty/${item._id}`,
       method: "DELETE",
       headers: {
         authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ const Faculty = () => {
     if (value.name !== "" && value.role !== "") {
       dispatch(setGlobalLoader(true));
       axios({
-        url: REACT_APP_BACKEND_URL+`/api/faculty`,
+        url: `${process.env.REACT_APP_API_BASE_URL}/api/faculty`,
         method: "POST",
         headers: {
           authorization: `Bearer ${token}`,

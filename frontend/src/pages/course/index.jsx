@@ -15,7 +15,7 @@ const Course = ({ isTeacher = false }) => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: REACT_APP_BACKEND_URL+"/api/courses",
+      url: "${process.env.REACT_APP_API_BASE_URL}/api/courses",
       method: "GET",
     })
       .then((res) => {

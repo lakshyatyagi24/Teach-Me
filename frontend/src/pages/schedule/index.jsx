@@ -40,7 +40,7 @@ const Schedule = () => {
     if (availSlot !== "") {
       dispatch(setGlobalLoader(true));
       axios({
-        url: REACT_APP_BACKEND_URL+`/api/enroll-Course`,
+        url: `${process.env.REACT_APP_API_BASE_URL}/api/enroll-Course`,
         method: "POST",
         headers: {
           authorization: `Bearer ${token}`,
@@ -65,7 +65,7 @@ const Schedule = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: REACT_APP_BACKEND_URL+`/api/teacher-course/${params?.id}`,
+      url: `${process.env.REACT_APP_API_BASE_URL}/api/teacher-course/${params?.id}`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -95,7 +95,7 @@ const Schedule = () => {
     if (review.comment !== "" && review.rating !== "") {
       dispatch(setGlobalLoader(true));
       axios({
-        url: REACT_APP_BACKEND_URL+`/api/review-Course`,
+        url: `${process.env.REACT_APP_API_BASE_URL}/api/review-Course`,
         method: "POST",
         headers: {
           authorization: `Bearer ${token}`,
@@ -124,7 +124,7 @@ const Schedule = () => {
       <Row justify={"space-between"}>
         <Col span={8}>
           <ImageProduct>
-            <img src={REACT_APP_BACKEND_URL+`${course?.image}`} />
+            <img src={`${process.env.REACT_APP_API_BASE_URL}${course?.image}`} />
           </ImageProduct>
           <CourseName>{course?.name}</CourseName>
           <Description>{course?.description}</Description>
