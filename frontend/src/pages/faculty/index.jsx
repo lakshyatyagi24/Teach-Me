@@ -45,7 +45,7 @@ const Faculty = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: "${process.env.REACT_APP_API_BASE_URL}/api/teachers",
+      url: `${process.env.REACT_APP_API_BASE_URL}/api/teachers`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ const Faculty = () => {
     if (!open) {
       dispatch(setGlobalLoader(true));
       axios({
-        url: "${process.env.REACT_APP_API_BASE_URL}/api/faculty/admin",
+        url: `${process.env.REACT_APP_API_BASE_URL}/api/faculty/admin`,
         method: "GET",
         headers: {
           authorization: `Bearer ${token}`,

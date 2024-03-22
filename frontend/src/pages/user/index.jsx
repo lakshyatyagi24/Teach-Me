@@ -92,7 +92,7 @@ const User = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: "${process.env.REACT_APP_API_BASE_URL}/api/users",
+      url: `${process.env.REACT_APP_API_BASE_URL}/api/users`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
