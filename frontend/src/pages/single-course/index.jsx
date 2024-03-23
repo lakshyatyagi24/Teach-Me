@@ -29,7 +29,7 @@ const SingleCourse = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `${process.env.REACT_APP_API_BASE_URL}/api/courses/${params?.id}`,
+      url: `http://localhost:5000/api/courses/${params?.id}`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ const SingleCourse = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `${process.env.REACT_APP_API_BASE_URL}/api/teacher-Course/course/${params?.id}`,
+      url: `http://localhost:5000/api/teacher-Course/course/${params?.id}`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const SingleCourse = () => {
       <Row>
         <Col span={12}>
           <ImageProduct>
-            <img src={`${process.env.REACT_APP_API_BASE_URL}${course?.image}`} />
+            <img src={`http://localhost:5000${course?.image}`} />
           </ImageProduct>
         </Col>
         <Col span={12}>
@@ -93,7 +93,7 @@ const SingleCourse = () => {
                         <td className="p-1">
                             <img
                               height={70}
-                              src={`${process.env.REACT_APP_API_BASE_URL}${item?.teacherId?.picture}`}
+                              src={`http://localhost:5000${item?.teacherId?.picture}`}
                             />
                         </td>
                           <td className="p-3">{item?.teacherId?.name}</td>

@@ -66,7 +66,7 @@ const Register = ({ isTeacher }) => {
         if (value.confirm_password == value.password) {
           dispatch(setGlobalLoader(true));
           axios({
-            url: `${process.env.REACT_APP_API_BASE_URL}/api/users/register/student`,
+            url: `http://localhost:5000/api/users/register/student`,
             method: "POST",
             headers: {},
             data: value,
@@ -114,7 +114,7 @@ const Register = ({ isTeacher }) => {
           formData.append("teacherId", value.teacherId);
           dispatch(setGlobalLoader(true));
           axios({
-            url: `${process.env.REACT_APP_API_BASE_URL}/api/users/register/teacher`,
+            url: `http://localhost:5000/api/users/register/teacher`,
             method: "POST",
             headers: {
               "Content-Type": "multipart/form-data",

@@ -14,7 +14,7 @@ const TeacherCourses = ({ isUpdate = false }) => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `${process.env.REACT_APP_API_BASE_URL}/api/teacher-course`,
+      url: `http://localhost:5000/api/teacher-course`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
