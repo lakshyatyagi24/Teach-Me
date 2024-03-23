@@ -42,7 +42,7 @@ const User = () => {
     if (value.name !== "" && value.email !== "" && value.role !== "") {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `${process.env.REACT_APP_BACKEND_URL}/api/users/profile/${id}`,
+        url: `http://localhost:5000/api/users/profile/${id}`,
         method: "PUT",
         headers: {
           authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ const User = () => {
   const deleteHandler = (item) => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `${process.env.REACT_APP_BACKEND_URL}/api/users/${item._id}`,
+      url: `http://localhost:5000/api/users/${item._id}`,
       method: "DELETE",
       headers: {
         authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ const User = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `${process.env.REACT_APP_BACKEND_URL}/api/users`,
+      url: `http://localhost:5000/api/users`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,

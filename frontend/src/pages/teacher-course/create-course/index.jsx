@@ -114,7 +114,7 @@ const createCourse = ({ isUpdate = false }) => {
     if (!isUpdate) {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `${process.env.REACT_APP_BACKEND_URL}/api/courses/${params?.id}`,
+        url: `http://localhost:5000/api/courses/${params?.id}`,
         method: "GET",
         headers: {
           authorization: `Bearer ${token}`,
@@ -129,7 +129,7 @@ const createCourse = ({ isUpdate = false }) => {
     } else {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `${process.env.REACT_APP_BACKEND_URL}/api/teacher-course/${params?.id}`,
+        url: `http://localhost:5000/api/teacher-course/${params?.id}`,
         method: "GET",
         headers: {
           authorization: `Bearer ${token}`,
@@ -364,7 +364,7 @@ const createCourse = ({ isUpdate = false }) => {
           try {
             dispatch(setGlobalLoader(true));
             axios({
-              url: `${process.env.REACT_APP_BACKEND_URL}/api/teacher-Course`,
+              url: `http://localhost:5000/api/teacher-Course`,
               method: "POST",
               headers: {
                 authorization: `Bearer ${token}`,
@@ -390,7 +390,7 @@ const createCourse = ({ isUpdate = false }) => {
       if (res) {
         dispatch(setGlobalLoader(true));
         axios({
-          url: `${process.env.REACT_APP_BACKEND_URL}/api/teacher-Course/update`,
+          url: `http://localhost:5000/api/teacher-Course/update`,
           method: "POST",
           headers: {
             authorization: `Bearer ${token}`,
@@ -411,7 +411,7 @@ const createCourse = ({ isUpdate = false }) => {
     setIsTeaching(value);
     dispatch(setGlobalLoader(true));
     axios({
-      url: `${process.env.REACT_APP_BACKEND_URL}/api/teacher-Course/status`,
+      url: `http://localhost:5000/api/teacher-Course/status`,
       method: "POST",
       headers: {
         authorization: `Bearer ${token}`,
@@ -444,7 +444,7 @@ const createCourse = ({ isUpdate = false }) => {
       <Row justify={"space-between"}>
         <Col span={8}>
           <ImageProduct>
-            <img src={`${process.env.REACT_APP_BACKEND_URL}${course?.image}`} />
+            <img src={`http://localhost:5000${course?.image}`} />
           </ImageProduct>
           <CourseName>{course?.name}</CourseName>
           <Description>{course?.description}</Description>
