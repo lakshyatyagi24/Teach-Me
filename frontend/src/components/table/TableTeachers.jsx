@@ -14,7 +14,7 @@ function TableTeachers() {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `http://localhost:5000/api/faculty`,
+      url: `${process.env.REACT_APP_BECKEND_URL}/api/faculty`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,

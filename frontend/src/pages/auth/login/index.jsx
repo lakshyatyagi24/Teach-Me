@@ -31,7 +31,7 @@ const Login = () => {
     if (values.email !== "" && values.password !== "") {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `http://localhost:5000/api/users/login`,
+        url: `${process.env.REACT_APP_BECKEND_URL}/api/users/login`,
         method: "POST",
         headers: {},
         data: values,

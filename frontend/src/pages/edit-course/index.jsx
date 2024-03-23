@@ -36,7 +36,7 @@ const EditCourse = ({ isAdd = false }) => {
     if (!isAdd) {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `http://localhost:5000/api/courses/${params?.id}`,
+        url: `${process.env.REACT_APP_BECKEND_URL}/api/courses/${params?.id}`,
         method: "GET",
         headers: {
           authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ const EditCourse = ({ isAdd = false }) => {
       })
         .then((res) => {
           form.setFieldsValue(res.data);
-          setImage(`http://localhost:5000${res?.data?.image}`);
+          setImage(`${process.env.REACT_APP_BECKEND_URL}${res?.data?.image}`);
           form.setFieldValue("image", "");
         })
         .finally(() => {
@@ -81,7 +81,7 @@ const EditCourse = ({ isAdd = false }) => {
         formData.append("faculty", value.faculty);
         dispatch(setGlobalLoader(true));
         axios({
-          url: `http://localhost:5000/api/courses`,
+          url: `${process.env.REACT_APP_BECKEND_URL}/api/courses`,
           method: "POST",
           headers: {
             authorization: `Bearer ${token}`,
@@ -108,7 +108,7 @@ const EditCourse = ({ isAdd = false }) => {
       if (value.faculty) formData.append("faculty", value.faculty);
       dispatch(setGlobalLoader(true));
       axios({
-        url: `http://localhost:5000/api/courses/${params?.id}`,
+        url: `${process.env.REACT_APP_BECKEND_URL}/api/courses/${params?.id}`,
         method: "POST",
         headers: {
           authorization: `Bearer ${token}`,
