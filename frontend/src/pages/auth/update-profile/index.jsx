@@ -15,7 +15,7 @@ const UpdateProfile = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(false));
     axios({
-      url: `http://localhost:5000/api/users/profile`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/api/users/profile`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ const UpdateProfile = () => {
       if (value.confirm_password === value.password) {
         dispatch(setGlobalLoader(true));
         axios({
-          url: `http://localhost:5000/api/users/profile`,
+          url: `${process.env.REACT_APP_BACKEND_URL}/api/users/profile`,
           method: "PUT",
           headers: {
             authorization: `Bearer ${token}`,
