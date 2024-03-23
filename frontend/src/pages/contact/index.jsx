@@ -28,7 +28,7 @@ const Contact = () => {
     ) {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `${process.env.REACT_APP_BECKEND_URL}/api/contact`,
+        url: `http://localhost:5000/api/contact`,
         method: "POST",
         data: {
           name: `${contact.first_name} ${contact.first_name}`,

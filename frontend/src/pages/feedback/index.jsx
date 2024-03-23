@@ -17,7 +17,7 @@ const Feedback = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `${process.env.REACT_APP_BECKEND_URL}/api/review-Course/${params.id}`,
+      url: `http://localhost:5000/api/review-Course/${params.id}`,
       method: "GET",
     })
       .then((res) => {
