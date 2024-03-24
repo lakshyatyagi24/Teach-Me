@@ -28,7 +28,7 @@ const Contact = () => {
     ) {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `http://localhost:5000/api/contact`,
+        url: `/api/contact`,
         method: "POST",
         data: {
           name: `${contact.first_name} ${contact.first_name}`,

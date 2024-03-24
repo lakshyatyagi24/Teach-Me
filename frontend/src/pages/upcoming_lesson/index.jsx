@@ -35,7 +35,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
     if (!isTeacher) {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `http://localhost:5000/api/enroll-course`,
+        url: `/api/enroll-course`,
         method: "GET",
         headers: {
           authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
     } else {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `http://localhost:5000/api/enroll-course/teacher`,
+        url: `/api/enroll-course/teacher`,
         method: "GET",
         headers: {
           authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
           if (isTeacher) {
             dispatch(setGlobalLoader(true));
             axios({
-              url: `http://localhost:5000/api/enroll-course/course`,
+              url: `/api/enroll-course/course`,
               method: "POST",
               headers: {
                 authorization: `Bearer ${token}`,
@@ -99,7 +99,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
           } else {
             dispatch(setGlobalLoader(true));
             axios({
-              url: `http://localhost:5000/api/enroll-course/student`,
+              url: `/api/enroll-course/student`,
               method: "POST",
               headers: {
                 authorization: `Bearer ${token}`,

@@ -29,7 +29,7 @@ const SingleCourse = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `http://localhost:5000/api/courses/${params?.id}`,
+      url: `/api/courses/${params?.id}`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ const SingleCourse = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `http://localhost:5000/api/teacher-Course/course/${params?.id}`,
+      url: `/api/teacher-Course/course/${params?.id}`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const SingleCourse = () => {
       <Row>
         <Col span={12}>
           <ImageProduct>
-            <img src={`http://localhost:5000${course?.image}`} />
+            <img src={`${course?.image}`} />
           </ImageProduct>
         </Col>
         <Col span={12}>
@@ -93,7 +93,7 @@ const SingleCourse = () => {
                         <td className="p-1">
                             <img
                               height={70}
-                              src={`http://localhost:5000${item?.teacherId?.picture}`}
+                              src={`${item?.teacherId?.picture}`}
                             />
                         </td>
                           <td className="p-3">{item?.teacherId?.name}</td>

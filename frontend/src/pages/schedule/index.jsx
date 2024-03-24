@@ -40,7 +40,7 @@ const Schedule = () => {
     if (availSlot !== "") {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `http://localhost:5000/api/enroll-Course`,
+        url: `/api/enroll-Course`,
         method: "POST",
         headers: {
           authorization: `Bearer ${token}`,
@@ -65,7 +65,7 @@ const Schedule = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `http://localhost:5000/api/teacher-course/${params?.id}`,
+      url: `/api/teacher-course/${params?.id}`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -95,7 +95,7 @@ const Schedule = () => {
     if (review.comment !== "" && review.rating !== "") {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `http://localhost:5000/api/review-Course`,
+        url: `/api/review-Course`,
         method: "POST",
         headers: {
           authorization: `Bearer ${token}`,
@@ -124,7 +124,7 @@ const Schedule = () => {
       <Row justify={"space-between"}>
         <Col span={8}>
           <ImageProduct>
-            <img src={`http://localhost:5000${course?.image}`} />
+            <img src={`${course?.image}`} />
           </ImageProduct>
           <CourseName>{course?.name}</CourseName>
           <Description>{course?.description}</Description>
