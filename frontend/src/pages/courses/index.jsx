@@ -21,7 +21,7 @@ const Courses = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `http://localhost:5000/api/courses`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/api/courses`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
