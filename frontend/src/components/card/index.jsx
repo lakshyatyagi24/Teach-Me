@@ -25,7 +25,7 @@ const Card = ({ item, isTeacher = false, isUpdate = false, _id }) => {
       }}
     >
       <Wrapper>
-        <CardImage src={`${item?.image}`} alt="img" />
+        <CardImage src={`http://localhost:5000${item?.image}`} alt="img" />
         <h2>{item?.name}</h2>
         <Description>{item?.description}</Description>
         <Price>

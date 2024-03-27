@@ -29,7 +29,7 @@ const SingleCourse = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `/api/courses/${params?.id}`,
+      url: `http://localhost:5000/api/courses/${params?.id}`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ const SingleCourse = () => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `/api/teacher-Course/course/${params?.id}`,
+      url: `http://localhost:5000/api/teacher-Course/course/${params?.id}`,
       method: "GET",
       headers: {
         authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const SingleCourse = () => {
       <Row>
         <Col span={12}>
           <ImageProduct>
-            <img src={`${course?.image}`} />
+            <img src={`http://localhost:5000${course?.image}`} />
           </ImageProduct>
         </Col>
         <Col span={12}>
@@ -90,12 +90,12 @@ const SingleCourse = () => {
                           style={{ cursor: "pointer", verticalAlign: "middle" }}
                           onClick={() => clickHandler(item?._id)}
                         >
-                        <td className="p-1">
+                          <td className="p-1">
                             <img
                               height={70}
-                              src={`${item?.teacherId?.picture}`}
+                              src={`http://localhost:5000${item?.teacherId?.picture}`}
                             />
-                        </td>
+                          </td>
                           <td className="p-3">{item?.teacherId?.name}</td>
                           <td className="p-3">{item?.teacherId?.email}</td>
                           <td className="p-3">{item?.price}</td>

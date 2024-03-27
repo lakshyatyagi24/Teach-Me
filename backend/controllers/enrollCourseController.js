@@ -94,6 +94,7 @@ const enrollCourse = asyncHandler(async (req, res) => {
   const isStudentEnrolled = await EnrolledStudent.findOne({
     enrolledUserId: req.user._id,
     teacherCourseId: teacherCourseId,
+    isActive: true,
   });
   if (isStudentEnrolled) {
     res.status(400);
@@ -227,10 +228,10 @@ const updateStatusofEnrollCourse = asyncHandler(async (req, res) => {
     }`;
   });
 
-  // const updateResult = await EnrolledStudent.updateMany(
-  //   { teacherCourseId },
-  //   { isActive }
-  // );
+  const updateResult = await EnrolledStudent.updateMany(
+    { teacherCourseId },
+    { $set: { isActive: false }}
+  );
   // if (isActive === false) {
 
   await EmailSender(
@@ -269,7 +270,7 @@ const StudenClassCancel = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("course not found");
   }
-  const updateStatus = await EnrolledStudent.updateOne({
+  const updateStatus = await EnrolledStudent.updateMany({
     teacherCourseId,
     slot_id,
     enrolledUserId: req.user._id,

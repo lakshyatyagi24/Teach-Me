@@ -35,7 +35,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
     if (!isTeacher) {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `/api/enroll-course`,
+        url: "http://localhost:5000/api/enroll-course",
         method: "GET",
         headers: {
           authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
     } else {
       dispatch(setGlobalLoader(true));
       axios({
-        url: `/api/enroll-course/teacher`,
+        url: "http://localhost:5000/api/enroll-course/teacher",
         method: "GET",
         headers: {
           authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
           if (isTeacher) {
             dispatch(setGlobalLoader(true));
             axios({
-              url: `/api/enroll-course/course`,
+              url: "http://localhost:5000/api/enroll-course/course",
               method: "POST",
               headers: {
                 authorization: `Bearer ${token}`,
@@ -89,6 +89,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
                 setLessonTime("");
                 toast.success("Class Cancel Successfully!");
                 setOpen(false);
+                navigate('/')
               })
               .catch((err) => {
                 toast.error(err?.response?.data?.message);
@@ -99,7 +100,7 @@ const UpcomingLesson = ({ isTeacher = false }) => {
           } else {
             dispatch(setGlobalLoader(true));
             axios({
-              url: `/api/enroll-course/student`,
+              url: "http://localhost:5000/api/enroll-course/student",
               method: "POST",
               headers: {
                 authorization: `Bearer ${token}`,

@@ -15,7 +15,7 @@ const Course = ({ isTeacher = false }) => {
   useEffect(() => {
     dispatch(setGlobalLoader(true));
     axios({
-      url: `/api/courses`,
+      url: "http://localhost:5000/api/courses",
       method: "GET",
     })
       .then((res) => {
